@@ -21,6 +21,7 @@ public class IntroLogoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro_logo);
 
         initViewVariables();
+        setLogoTextFont();
         setupAndPlayVideo();
     }
 
