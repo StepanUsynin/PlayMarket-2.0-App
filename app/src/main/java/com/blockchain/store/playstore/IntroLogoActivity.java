@@ -5,14 +5,10 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.VideoView;
-
-import io.ethmobile.ethdroid.EthDroid;
 
 public class IntroLogoActivity extends AppCompatActivity {
 

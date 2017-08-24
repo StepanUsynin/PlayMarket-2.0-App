@@ -5,15 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import java.util.List;
-
-import io.ethmobile.ethdroid.KeyManager;
-import org.ethereum.geth.Account;
-
 public class NewUserWelcomeActivity extends AppCompatActivity {
 
     public CryptoUtils crypto;
-    public List<Account> accounts;
 
     private String datadir;
     private String etherAddress;
