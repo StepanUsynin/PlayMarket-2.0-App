@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.blockchain.store.playstore">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -23,7 +24,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginPromptActivity" />
-        <activity android:name=".NewUserWelcomeActivity"></activity>
+        <activity android:name=".NewUserWelcomeActivity" />
+        <activity
+            android:name=".AppListActivity"
+            android:label="@string/title_app_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AppDetailActivity"
+            android:label="@string/title_app_detail"
+            android:parentActivityName=".AppListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.blockchain.store.playstore.AppListActivity" />
+        </activity>
     </application>
 
 </manifest>

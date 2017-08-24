@@ -1,8 +1,10 @@
 package com.blockchain.store.playstore;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 public class NewUserWelcomeActivity extends AppCompatActivity {
@@ -48,5 +50,10 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
     protected void setupCryptoUtils() {
         crypto = new CryptoUtils();
+    }
+
+    public void goToFeaturedAppsPage(View view) {
+        Intent myIntent=new Intent(getApplicationContext(),AppListActivity.class );
+        startActivityForResult(myIntent,0);
     }
 }

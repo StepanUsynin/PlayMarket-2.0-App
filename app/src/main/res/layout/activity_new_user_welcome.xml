@@ -17,6 +17,7 @@
         android:layout_marginLeft="57dp"
         android:layout_marginRight="57dp"
         android:layout_marginStart="57dp"
+        android:onClick="goToFeaturedAppsPage"
         android:text="ПРОДОЛЖИТЬ"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -30,10 +31,10 @@
 
     <TextView
         android:id="@+id/LogoTextView"
-        android:layout_width="265dp"
-        android:layout_height="29dp"
+        android:layout_width="234dp"
+        android:layout_height="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="33dp"
+        android:layout_marginRight="32dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="27dp"
         android:text="PLAYMARKET 2.0"
@@ -45,7 +46,9 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_editor_absoluteY="24dp"
+        tools:layout_editor_absoluteX="118dp" />
 
     <ImageView
         android:id="@+id/LogoImageView"
@@ -60,7 +63,7 @@
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="37dp"
+        android:layout_marginLeft="57dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -82,7 +85,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="42dp"
-        android:layout_marginRight="42dp" />
+        android:layout_marginRight="42dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/AddressTextView"
@@ -104,7 +109,9 @@
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.296" />
 
     <TextView
         android:id="@+id/textView4"
