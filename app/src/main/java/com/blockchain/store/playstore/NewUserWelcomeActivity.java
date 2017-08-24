@@ -1,19 +1,21 @@
 package com.blockchain.store.playstore;
 
-import android.content.Intent;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.VideoView;
+
+import java.util.List;
 
 import io.ethmobile.ethdroid.EthDroid;
 import io.ethmobile.ethdroid.KeyManager;
+import org.ethereum.geth.Account;
 
 public class NewUserWelcomeActivity extends AppCompatActivity {
 
     public KeyManager keyManager;
+    public List<Account> accounts;
+
     private String datadir;
     private String etherAddress;
     private TextView AddressTextView;
@@ -38,9 +40,10 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
         try {
             keyManager.newAccount("Test");
-            etherAddress = keyManager.getAccounts().get(0).getAddress().getHex().toString();
-            Log.d("Ether", etherAddress);
+            accounts = keyManager.getAccounts();
+            etherAddress = accounts.get(accounts.size()-1).getAddress().getHex().toString();
 
+            Log.d("Ether", etherAddress);
             AddressTextView.setText(etherAddress);
         } catch (Exception e) {
             e.printStackTrace();
