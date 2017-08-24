@@ -52,16 +52,4 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
     protected void setDatadir() {
         datadir = getFilesDir().getAbsolutePath();
     }
-
-    protected void startEtherNode() {
-        try {
-            new EthDroid.Builder(datadir)
-                    .onTestnet()
-                    .build()
-                    .start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 }
