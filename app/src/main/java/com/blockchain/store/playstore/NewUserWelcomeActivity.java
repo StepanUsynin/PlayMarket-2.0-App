@@ -27,7 +27,6 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
         setupView();
         setDatadir();
-        startEtherNode();
         setupKeyManager();
     }
 

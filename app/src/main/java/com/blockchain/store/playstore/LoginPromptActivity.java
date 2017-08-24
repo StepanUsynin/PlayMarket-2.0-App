@@ -13,9 +13,12 @@ public class LoginPromptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_prompt);
     }
 
+    @Override
+    public void onBackPressed() {}
+
     public void LoadNewUserWelcomeActivity(View view) {
-        Intent myIntent=new Intent(getApplicationContext(),NewUserWelcomeActivity.class );
-        startActivityForResult(myIntent,0);
+        Intent myIntent = new Intent(getApplicationContext(), NewUserWelcomeActivity.class);
+        startActivityForResult(myIntent, 0);
     }
 
 }

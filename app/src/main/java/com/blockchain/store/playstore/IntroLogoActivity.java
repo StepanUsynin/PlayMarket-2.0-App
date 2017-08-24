@@ -12,12 +12,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import io.ethmobile.ethdroid.EthDroid;
+
 public class IntroLogoActivity extends AppCompatActivity {
 
     TextView logoTextView;
     VideoView logoVideoView;
+    String datadir;
 
-    final int SplashDisplayLength = 3000;
+    final int SplashDisplayLength = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,8 @@ public class IntroLogoActivity extends AppCompatActivity {
         initViewVariables();
         setLogoTextFont();
         setupAndPlayVideo();
+        setDatadir();
+        startEtherNode();
         loadLoginPromptActivity();
     }
 
@@ -64,5 +69,21 @@ public class IntroLogoActivity extends AppCompatActivity {
                 startActivityForResult(myIntent,0);
             }
         }, SplashDisplayLength);
+    }
+
+    protected void setDatadir() {
+        datadir = getFilesDir().getAbsolutePath();
+    }
+
+    protected void startEtherNode() {
+        try {
+            new EthDroid.Builder(datadir)
+                    .onTestnet()
+                    .build()
+                    .start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
