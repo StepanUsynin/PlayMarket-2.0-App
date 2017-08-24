@@ -7,13 +7,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import io.ethmobile.ethdroid.EthDroid;
 import io.ethmobile.ethdroid.KeyManager;
 import org.ethereum.geth.Account;
 
 public class NewUserWelcomeActivity extends AppCompatActivity {
 
-    public KeyManager keyManager;
+    public CryptoUtils crypto;
     public List<Account> accounts;
 
     private String datadir;
@@ -27,6 +26,7 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
         setupView();
         setDatadir();
+        setupCryptoUtils();
         setupKeyManager();
     }
 
@@ -35,12 +35,11 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
     }
 
     protected void setupKeyManager() {
-        keyManager = KeyManager.newKeyManager(datadir);
+        crypto.initKeyManager(datadir);
 
         try {
-            keyManager.newAccount("Test");
-            accounts = keyManager.getAccounts();
-            etherAddress = accounts.get(accounts.size()-1).getAddress().getHex().toString();
+            crypto.keyManager.newAccount("Test");
+            etherAddress = crypto.getLastAddress();
 
             Log.d("Ether", etherAddress);
             AddressTextView.setText(etherAddress);
@@ -51,5 +50,9 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
     protected void setDatadir() {
         datadir = getFilesDir().getAbsolutePath();
+    }
+
+    protected void setupCryptoUtils() {
+        crypto = new CryptoUtils();
     }
 }

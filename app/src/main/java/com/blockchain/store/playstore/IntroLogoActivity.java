@@ -19,6 +19,7 @@ public class IntroLogoActivity extends AppCompatActivity {
     TextView logoTextView;
     VideoView logoVideoView;
     String datadir;
+    CryptoUtils crypto;
 
     final int SplashDisplayLength = 5000;
 
@@ -76,14 +77,7 @@ public class IntroLogoActivity extends AppCompatActivity {
     }
 
     protected void startEtherNode() {
-        try {
-            new EthDroid.Builder(datadir)
-                    .onTestnet()
-                    .build()
-                    .start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        crypto = new CryptoUtils();
+        crypto.startEtherNodeTestnet(datadir);
     }
 }
