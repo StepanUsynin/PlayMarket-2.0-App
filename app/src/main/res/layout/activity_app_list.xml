@@ -24,18 +24,22 @@
     <ImageButton
         android:id="@+id/imageButton4"
         android:layout_width="50dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:background="@mipmap/ic_menu_bars"
         app:srcCompat="@color/Clear"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="25dp"
-        android:layout_alignTop="@+id/editText"
+        android:layout_alignBottom="@+id/editText"
         android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/editText"
-        android:layout_width="310dp"
+        android:layout_width="320dp"
         android:layout_height="43dp"
+        android:layout_above="@+id/scrollView2"
+        android:layout_marginBottom="18dp"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/imageButton4"
         android:background="@drawable/round_corner_search_box"
         android:ems="10"
         android:inputType="textPersonName"
@@ -45,10 +49,7 @@
         android:textColor="?android:attr/colorControlNormal"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="59dp"
-        tools:layout_editor_absoluteY="25dp"
-        android:layout_marginBottom="22dp"
-        android:layout_above="@+id/scrollView2"
-        android:layout_toEndOf="@+id/imageButton4" />
+        tools:layout_editor_absoluteY="25dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -104,5 +105,14 @@
                 android:layout_below="@+id/textView2" />
         </LinearLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/editText"
+        app:srcCompat="@mipmap/ic_search"
+        android:layout_alignTop="@+id/editText"
+        android:layout_alignEnd="@+id/editText" />
 
 </RelativeLayout>

@@ -26,6 +26,9 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
         setupKeyManager();
     }
 
+    @Override
+    public void onBackPressed() {}
+
     protected void setupView() {
         AddressTextView = (TextView) findViewById(R.id.AddressTextView);
     }
