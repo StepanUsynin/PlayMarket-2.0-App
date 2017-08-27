@@ -1,108 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.blockchain.store.playstore.AppListActivity">
+    tools:context="com.blockchain.store.playstore.AppListActivity"
+    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteX="0dp">
 
-    <android.support.constraint.ConstraintLayout
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/header"
+        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="-8dp"
+        tools:layout_editor_absoluteY="-7dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="50dp"
+        android:layout_height="46dp"
+        android:background="@mipmap/ic_menu_bars"
+        app:srcCompat="@color/Clear"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="25dp"
+        android:layout_alignTop="@+id/editText"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="310dp"
+        android:layout_height="43dp"
+        android:background="@drawable/round_corner_search_box"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        android:text="SEARCH"
+        android:textAlignment="textStart"
+        android:textColor="?android:attr/colorControlNormal"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="25dp"
+        android:layout_marginBottom="22dp"
+        android:layout_above="@+id/scrollView2"
+        android:layout_toEndOf="@+id/imageButton4" />
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp">
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/scrollView2">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="95dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/header"
-            app:layout_constraintBottom_toTopOf="@+id/frameLayout"
-            app:layout_constraintHorizontal_bias="0.444"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.965"
-            tools:layout_constraintBottom_creator="1"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="309dp"
-                android:layout_height="43dp"
-                android:background="@drawable/round_corner_search_box"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:singleLine="true"
-                android:text="SEARCH"
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textView2"
+                android:layout_below="@+id/app_list"
+                android:layout_marginTop="10dp"
+                android:text="  Trending"
                 android:textAlignment="textStart"
-                android:textColor="?android:attr/colorControlNormal"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.786"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_constraintBottom_creator="1"
-                tools:layout_constraintRight_creator="1"
-                tools:layout_constraintTop_creator="1"
-                app:layout_constraintVertical_bias="0.692" />
-
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="36dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginTop="4dp"
-                android:background="@mipmap/ic_search"
-                app:layout_constraintBottom_toBottomOf="@+id/editText2"
-                app:layout_constraintRight_toRightOf="@+id/editText2"
-                app:layout_constraintTop_toTopOf="@+id/editText2"
-                tools:layout_constraintBottom_creator="1"
-                tools:layout_constraintRight_creator="1"
-                tools:layout_constraintTop_creator="1" />
-
-            <ImageButton
-                android:id="@+id/imageButton4"
-                android:layout_width="50dp"
-                android:layout_height="46dp"
-                android:background="@mipmap/ic_menu_bars"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/editText2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@color/Clear"
-                tools:layout_constraintBottom_creator="1"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintRight_creator="1"
-                tools:layout_constraintTop_creator="1"
-                app:layout_constraintVertical_bias="0.673"
-                android:layout_marginRight="10dp" />
-        </android.support.constraint.ConstraintLayout>
-
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="0dp"
-            android:layout_height="498dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:layout_constraintTop_creator="1"
-            tools:layout_constraintRight_creator="1"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="111dp"
-            tools:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+                android:textAllCaps="true"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
 
             <include
+                android:id="@+id/app_list2"
                 layout="@layout/app_list"
-                android:layout_height="512dp" />
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView3" />
 
-        </FrameLayout>
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="388dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imageView2"
+                android:layout_marginStart="13dp"
+                android:text="Essentials"
+                android:textAllCaps="true"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
 
+            <include
+                android:id="@+id/app_list"
+                layout="@layout/app_list"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView2" />
+        </LinearLayout>
+    </ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

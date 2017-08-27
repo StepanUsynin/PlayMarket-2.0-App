@@ -16,5 +16,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
+        android:maxLines="3"
         android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/Price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:text="0.0 ETH"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="10sp"
+        android:typeface="normal" />
 </LinearLayout>

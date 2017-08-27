@@ -48,6 +48,11 @@ public class AppListActivity extends AppCompatActivity {
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
+        View recyclerView2 = findViewById(R.id.app_list2);
+        assert recyclerView2 != null;
+        setupRecyclerView((RecyclerView) recyclerView2);
+
+
         if (findViewById(R.id.app_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -82,6 +87,7 @@ public class AppListActivity extends AppCompatActivity {
             holder.mItem = mValues.get(position);
             holder.mIconView.setImageDrawable(getResources().getDrawable(R.mipmap.ic_snapchat));
             holder.mContentView.setText(mValues.get(position).content);
+            holder.mPriceView.setText(mValues.get(position).price);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,6 +119,7 @@ public class AppListActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final ImageView mIconView;
+            public final TextView mPriceView;
             public final TextView mContentView;
             public DummyContent.DummyItem mItem;
 
@@ -121,6 +128,7 @@ public class AppListActivity extends AppCompatActivity {
                 mView = view;
                 mIconView = (ImageView) view.findViewById(R.id.imageView);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mPriceView = (TextView) view.findViewById(R.id.Price);
             }
 
             @Override
