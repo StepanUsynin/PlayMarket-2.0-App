@@ -1,8 +1,11 @@
 package com.blockchain.store.playstore;
 
 import org.ethereum.geth.Account;
+import org.ethereum.geth.Transaction;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.ethmobile.ethdroid.EthDroid;
 import io.ethmobile.ethdroid.KeyManager;
@@ -15,37 +18,8 @@ public class CryptoUtils {
 
     public KeyManager keyManager;
     public static EthDroid ethdroid;
-    private List<Account> accounts;
 
-    public void initKeyManager(String datadir) {
-        keyManager = KeyManager.newKeyManager(datadir);
-    }
-
-    public String getLastAddress() {
-        try {
-            accounts = keyManager.getAccounts();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        if (accounts.isEmpty()){
-            return null;
-        }
-
-        return(accounts.get(0).getAddress().getHex().toString());
-    }
-
-    public void startEtherNode(String datadir) {
-        try {
-            new EthDroid.Builder(datadir)
-                    .onMainnet()
-                    .build()
-                    .start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public static final String CONTRACT_ADDRESS = "0x8be909dA263C51979e7B23219F0cCfB6f6C25087";
 
     public static void buildEtherNodeTestnet(String datadir) {
         try {
@@ -61,14 +35,15 @@ public class CryptoUtils {
         }
     }
 
-    public void startEtherNodeTestnet(String datadir) {
-        try {
-            new EthDroid.Builder(datadir)
-                    .onTestnet()
-                    .build()
-                    .start();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static String getRawTransaction(Transaction transaction) {
+        String transactionInfo = transaction.toString();
+        Pattern pattern = Pattern.compile("Hex:.*");
+        Matcher matcher = pattern.matcher(transactionInfo);
+        if (matcher.find())
+        {
+            return matcher.group(0).replaceAll("Hex:\\s*", "");
+        } else {
+            return "";
         }
     }
 }

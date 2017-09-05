@@ -70,7 +70,8 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
                 value, new BigInt(200000), new BigInt((long) 30000000000.0), null);
         try {
             Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
-            Log.d("Ether", transaction.toString());
+
+            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
         } catch (Exception e) {
             e.printStackTrace();
         }

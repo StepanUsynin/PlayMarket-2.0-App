@@ -1,5 +1,6 @@
 package com.blockchain.store.playstore.dummy;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.Map;
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
  * <p>
- * TODO: Replace all uses of this class before publishing your app.
  */
 public class DummyContent {
 
@@ -26,8 +26,7 @@ public class DummyContent {
     private static final int COUNT = 25;
 
     static {
-        // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
+        for (int i = 0; i <= COUNT; i++) {
             addItem(createDummyItem(i));
         }
     }
@@ -38,7 +37,12 @@ public class DummyContent {
     }
 
     private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Snapchat", "0.000 ETH", makeDetails(position));
+        float price = 0.0f;
+
+        if (position == 0) {
+            price = 0.5f;
+        }
+        return new DummyItem(String.valueOf(position), "Snapchat", price, BigInteger.ZERO, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -57,11 +61,13 @@ public class DummyContent {
         public final String id;
         public final String content;
         public final String details;
-        public final String price;
+        public final float price;
+        public final BigInteger priceWei;
 
-        public DummyItem(String id, String content, String price, String details) {
+        public DummyItem(String id, String content, float price, BigInteger priceWei, String details) {
             this.id = id;
             this.content = content;
+            this.priceWei = priceWei;
             this.details = details;
             this.price = price;
         }

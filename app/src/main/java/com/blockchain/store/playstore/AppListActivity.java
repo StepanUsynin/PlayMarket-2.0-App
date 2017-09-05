@@ -3,6 +3,8 @@ package com.blockchain.store.playstore;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blockchain.store.playstore.dummy.DummyContent;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,9 +42,6 @@ public class AppListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         View recyclerView = findViewById(R.id.app_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -56,6 +58,36 @@ public class AppListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        displayBalanceAlert();
+    }
+
+    @Override
+    public void onBackPressed() {}
+
+    public void displayBalanceAlert() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final String balance = String.valueOf(APIUtils.api.getBalance(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex().toString()));
+
+                    final String ether = balance.substring(0, balance.length() - 18);
+                    new Handler(Looper.getMainLooper()).post(new Runnable () {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Balance: " + ether + "." + balance.substring(ether.length(), balance.length() - 16),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -83,7 +115,7 @@ public class AppListActivity extends AppCompatActivity {
             holder.mItem = mValues.get(position);
             holder.mIconView.setImageDrawable(getResources().getDrawable(R.mipmap.ic_snapchat));
             holder.mContentView.setText(mValues.get(position).content);
-            holder.mPriceView.setText(mValues.get(position).price);
+            holder.mPriceView.setText(String.valueOf(mValues.get(position).price));
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,7 +131,7 @@ public class AppListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, AppDetailActivity.class);
-                        intent.putExtra(AppDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra("item_id", (int)Integer.valueOf(holder.mItem.id));
 
                         context.startActivity(intent);
                     }

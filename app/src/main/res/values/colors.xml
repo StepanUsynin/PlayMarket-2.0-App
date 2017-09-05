@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#138f92</color>
     <color name="Clear">#00ffffff</color>
+    <color name="buyButtonColor">#56a3a6</color>
+    <color name="investButtonColor">#68e5ad</color>
+    <color name="priceTextColor">#d6487b</color>
 </resources>

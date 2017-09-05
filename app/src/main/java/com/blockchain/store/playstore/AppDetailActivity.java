@@ -2,13 +2,26 @@ package com.blockchain.store.playstore;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.blockchain.store.playstore.dummy.DummyContent;
+
+import org.ethereum.geth.Address;
+import org.ethereum.geth.BigInt;
+import org.ethereum.geth.Transaction;
+import org.json.JSONObject;
 
 /**
  * An activity representing a single App detail screen. This
@@ -18,55 +31,95 @@ import android.view.MenuItem;
  */
 public class AppDetailActivity extends AppCompatActivity {
 
+    ImageView iconView;
+    TextView titleViewBody;
+    TextView priceTextView;
+    float price = 0.0f;
+    String priceWei;
+    int idApp = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
 
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        priceTextView = (TextView) findViewById(R.id.AppPrice);
+        titleViewBody = (TextView) findViewById(R.id.AppNameBody);
+        iconView = (ImageView) findViewById(R.id.iconView);
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(AppDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(AppDetailFragment.ARG_ITEM_ID));
-            AppDetailFragment fragment = new AppDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.app_detail_container, fragment)
-                    .commit();
-        }
+        int itemId = getIntent().getExtras().getInt("item_id");
+        DummyContent.DummyItem item = DummyContent.ITEMS.get(itemId);
+
+        idApp = Integer.valueOf(item.id);
+        price = item.price;
+
+        titleViewBody.setText(item.content);
+        priceTextView.setText("Цена: " + String.valueOf(price) + " ETH");
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpTo(new Intent(this, AppListActivity.class));
-            return true;
+    public void buyApp(View view) {
+
+        BigInt value = new BigInt(0);
+        value.setInt64((long) 1100000000000000.0);
+
+        Transaction tx = new Transaction(
+                3, new Address(CryptoUtils.CONTRACT_ADDRESS),
+                value, new BigInt(200000), new BigInt((long) 30000000000.0), null);
+        try {
+            Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
+            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return super.onOptionsItemSelected(item);
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+//                    String response = new CryptoUtils().buyApp(1, CryptoUtils.getAddress(getApplicationContext()), priceWei);
+//                    Log.d("Ether", response);
+//
+//                    JSONObject parsedResponse = new JSONObject(response);
+//                    if (parsedResponse.has("txn")) {
+//                        new Handler(Looper.getMainLooper()).post(new Runnable () {
+//                            @Override
+//                            public void run () {
+//                                displayProccessingAlert();
+//                            }
+//                        });
+//
+//                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+    }
+
+
+    public void displayDownloadingAlert() {
+        Toast.makeText(getApplicationContext(), "App Downloading!",
+                Toast.LENGTH_LONG).show();
+    }
+
+    public void displayInvestmentCompletedAlert() {
+        Toast.makeText(getApplicationContext(), "Tokens Received!",
+                Toast.LENGTH_LONG).show();
+    }
+
+
+    public void displayInvestedAlert() {
+        Toast.makeText(getApplicationContext(), "Investment Processing!",
+                Toast.LENGTH_LONG).show();
+    }
+
+
+    public void displayProccessingAlert() {
+        Toast.makeText(getApplicationContext(), "Purchase Processing!",
+                Toast.LENGTH_LONG).show();
     }
 }
