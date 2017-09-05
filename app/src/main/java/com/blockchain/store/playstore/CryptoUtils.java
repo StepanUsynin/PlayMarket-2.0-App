@@ -14,6 +14,7 @@ import io.ethmobile.ethdroid.KeyManager;
 public class CryptoUtils {
 
     public KeyManager keyManager;
+    public static EthDroid ethdroid;
     private List<Account> accounts;
 
     public void initKeyManager(String datadir) {
@@ -32,7 +33,7 @@ public class CryptoUtils {
             return null;
         }
 
-        return(accounts.get(accounts.size()-1).getAddress().getHex().toString());
+        return(accounts.get(0).getAddress().getHex().toString());
     }
 
     public void startEtherNode(String datadir) {
@@ -41,6 +42,20 @@ public class CryptoUtils {
                     .onMainnet()
                     .build()
                     .start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void buildEtherNodeTestnet(String datadir) {
+        try {
+            ethdroid = new EthDroid.Builder(datadir)
+                    .onTestnet()
+                    .withDatadirPath(datadir)
+                    .withKeyManager(KeyManager.newKeyManager(datadir))
+                    .withDefaultContext()
+                    .build();
+            ethdroid.start();
         } catch (Exception e) {
             e.printStackTrace();
         }

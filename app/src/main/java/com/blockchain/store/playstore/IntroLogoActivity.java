@@ -7,15 +7,18 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class IntroLogoActivity extends AppCompatActivity {
 
     TextView logoTextView;
     VideoView logoVideoView;
     String datadir;
-    CryptoUtils crypto;
 
     final int SplashDisplayLength = 5000;
 
@@ -29,6 +32,7 @@ public class IntroLogoActivity extends AppCompatActivity {
         setupAndPlayVideo();
         setDatadir();
         startEtherNode();
+        getNearestNodes();
         loadLoginPromptActivity();
     }
 
@@ -73,7 +77,37 @@ public class IntroLogoActivity extends AppCompatActivity {
     }
 
     protected void startEtherNode() {
-        crypto = new CryptoUtils();
-        crypto.startEtherNodeTestnet(datadir);
+        CryptoUtils.buildEtherNodeTestnet(datadir);
+    }
+
+    protected void getNearestNodes() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ArrayList coords = NodeUtils.getCoordinates();
+                    Log.d("Location", coords.get(0).toString() + "," + coords.get(1).toString());
+
+                    String[] nodes = NodeUtils.getNodesList(NodeUtils.NODES_DNS_SERVER);
+
+                    Log.d("Node", nodes.toString());
+
+                    String nearestNodeIP = NodeUtils.getNearestNode(nodes, (double) coords.get(0), (double) coords.get(1));
+                    Log.d("Node", nearestNodeIP);
+
+                    initApiUtils(nearestNodeIP);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+    }
+
+    protected void initApiUtils(String node) {
+        new APIUtils(node);
     }
 }
+
