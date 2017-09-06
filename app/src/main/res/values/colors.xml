@@ -7,4 +7,5 @@
     <color name="buyButtonColor">#56a3a6</color>
     <color name="investButtonColor">#68e5ad</color>
     <color name="priceTextColor">#d6487b</color>
+    <color name="appDetailButtonBackground">#9fe5b7</color>
 </resources>

@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import org.json.JSONObject;
 public class AppDetailActivity extends AppCompatActivity {
 
     ImageView iconView;
+    TextView appTitleHeader;
     TextView titleViewBody;
     TextView priceTextView;
     float price = 0.0f;
@@ -43,6 +45,7 @@ public class AppDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_detail);
 
+        appTitleHeader = (TextView) findViewById(R.id.AppNameTitle);
         priceTextView = (TextView) findViewById(R.id.AppPrice);
         titleViewBody = (TextView) findViewById(R.id.AppNameBody);
         iconView = (ImageView) findViewById(R.id.iconView);
@@ -53,6 +56,7 @@ public class AppDetailActivity extends AppCompatActivity {
         idApp = Integer.valueOf(item.id);
         price = item.price;
 
+        appTitleHeader.setText(item.content);
         titleViewBody.setText(item.content);
         priceTextView.setText("Цена: " + String.valueOf(price) + " ETH");
 
@@ -60,36 +64,35 @@ public class AppDetailActivity extends AppCompatActivity {
 
     public void buyApp(View view) {
 
-        BigInt value = new BigInt(0);
-        value.setInt64((long) 1100000000000000.0);
-
-        Transaction tx = new Transaction(
-                3, new Address(CryptoUtils.CONTRACT_ADDRESS),
-                value, new BigInt(200000), new BigInt((long) 30000000000.0), null);
-        try {
-            Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
-            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
                 try {
-//                    String response = new CryptoUtils().buyApp(1, CryptoUtils.getAddress(getApplicationContext()), priceWei);
-//                    Log.d("Ether", response);
-//
-//                    JSONObject parsedResponse = new JSONObject(response);
-//                    if (parsedResponse.has("txn")) {
-//                        new Handler(Looper.getMainLooper()).post(new Runnable () {
-//                            @Override
-//                            public void run () {
-//                                displayProccessingAlert();
-//                            }
-//                        });
-//
-//                    }
+                    String gasPrice = APIUtils.api.getGasPrice();
+                    int nonce = APIUtils.api.getNonce(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex());
+
+                    BigInt value = new BigInt(0);
+                    value.setInt64((long) 1100000000000000.0);
+
+                    Transaction tx = new Transaction(
+                            nonce, new Address(CryptoUtils.TEST_ADDRESS),
+                            value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), null);
+                    try {
+                        Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
+                        Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
+                        APIUtils.api.sendTX(CryptoUtils.getRawTransaction(transaction));
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable () {
+                            @Override
+                            public void run() {
+                                displayDownloadingAlert();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

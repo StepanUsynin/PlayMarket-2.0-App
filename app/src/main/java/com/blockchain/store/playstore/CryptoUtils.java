@@ -20,6 +20,7 @@ public class CryptoUtils {
     public static EthDroid ethdroid;
 
     public static final String CONTRACT_ADDRESS = "0x8be909dA263C51979e7B23219F0cCfB6f6C25087";
+    public static final String TEST_ADDRESS = "0x5e5c1c8e03472666e0b9e218153869dcbc9c1e65";
 
     public static void buildEtherNodeTestnet(String datadir) {
         try {
