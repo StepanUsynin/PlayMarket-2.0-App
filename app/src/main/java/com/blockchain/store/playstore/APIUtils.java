@@ -6,16 +6,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,10 +18,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
 
 /**
  * Created by samsheff on 05/09/2017.
@@ -40,7 +31,7 @@ public class APIUtils {
     public static final String GET_NONCE_URL = "/v1/getTransactionCount";
     public static final String GET_GAS_PRICE_URL = "/v1/getGasPrice";
     public static final String SEND_TX_URL = "/v1/sendRawTransaction";
-    public static final String START_URL = "/vi/start";
+    public static final String GET_APP_URL = "/v1/getApp";
 
     public String nodeUrl = "https://n";
 
@@ -168,18 +159,90 @@ public class APIUtils {
         return true;
     }
 
-    public long start() throws IOException {
-        HttpClient client = new DefaultHttpClient();
-
-        HttpGet request = new HttpGet(nodeUrl + START_URL);
+    public JSONArray start() throws IOException {
+        HttpClient client = createHttpClient();
+        HttpPost request = new HttpPost(nodeUrl + GET_APP_URL);
 
         HttpResponse response;
         response = client.execute(request);
         String responseBody = EntityUtils.toString(response.getEntity());
-        Log.d("NET",  "API Start: " + responseBody);
+        Log.d("NET",  "Get App: " + responseBody);
 
-        return 0;
+        JSONArray apps = new JSONArray();
+        try {
+            apps = new JSONObject(responseBody).getJSONArray("getApp");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return apps;
     }
+
+    public JSONArray getCategory(String category) throws IOException {
+        HttpClient client = createHttpClient();
+        HttpPost request = new HttpPost(nodeUrl + GET_APP_URL);
+
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
+        nameValuePair.add(new BasicNameValuePair("idCTG", category));
+
+        //Encoding POST data
+        try {
+            request.setEntity(new UrlEncodedFormEntity(nameValuePair));
+
+        } catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+        HttpResponse response;
+        response = client.execute(request);
+        String responseBody = EntityUtils.toString(response.getEntity());
+        Log.d("NET",  "Get App: " + responseBody);
+
+        JSONArray apps = new JSONArray();
+        try {
+            apps = new JSONObject(responseBody).getJSONArray("getApp");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return apps;
+    }
+
+    public JSONArray pageCategory(String category, int startId, int count) throws IOException {
+        HttpClient client = createHttpClient();
+        HttpPost request = new HttpPost(nodeUrl + GET_APP_URL);
+
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
+        nameValuePair.add(new BasicNameValuePair("idCTG", category));
+        nameValuePair.add(new BasicNameValuePair("startIdApp", String.valueOf(startId)));
+        nameValuePair.add(new BasicNameValuePair("startIdCount", String.valueOf(count)));
+
+        //Encoding POST data
+        try {
+            request.setEntity(new UrlEncodedFormEntity(nameValuePair));
+
+        } catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+        HttpResponse response;
+        response = client.execute(request);
+        String responseBody = EntityUtils.toString(response.getEntity());
+        Log.d("NET",  "Get App: " + responseBody);
+
+        JSONArray apps = new JSONArray();
+        try {
+            apps = new JSONObject(responseBody).getJSONArray("getApp");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return apps;
+    }
+
+
 
     private HttpClient createHttpClient() {
         return new DefaultHttpClient();

@@ -43,5 +43,7 @@ dependencies {
     compile 'de.measite.minidns:minidns-hla:0.2.2'
     compile 'org.apache.httpcomponents:httpcore:4.4.1'
     compile 'org.apache.httpcomponents:httpclient:4.5'
+    compile 'com.github.pwittchen:infinitescroll:0.0.1'
+    compile 'org.web3j:core-android:2.2.1'
     testCompile 'junit:junit:4.12'
 }

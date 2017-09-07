@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blockchain.store.playstore.dummy.DummyContent;
+import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.blockchain.store.playstore.R.attr.layoutManager;
 
 /**
  * An activity representing a list of Apps. This activity
@@ -37,19 +42,73 @@ public class AppListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private DummyContent content;
+    private DummyContent content1;
+
+    private RecyclerView recyclerViewTop;
+    private RecyclerView recyclerView2;
+    private LinearLayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_list);
 
-        View recyclerView = findViewById(R.id.app_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                content = new DummyContent("1");
+                content1 = new DummyContent("2");
 
-        View recyclerView2 = findViewById(R.id.app_list2);
-        assert recyclerView2 != null;
-        setupRecyclerView((RecyclerView) recyclerView2);
+                while (!content.READY) {}
+                while (!content1.READY) {}
 
+                new Handler(Looper.getMainLooper()).post(new Runnable () {
+                    @Override
+                    public void run() {
+                        recyclerViewTop = (RecyclerView) findViewById(R.id.app_list2);
+                        assert recyclerViewTop != null;
+                        setupRecyclerView(recyclerViewTop, content);
+
+                        recyclerView2 = (RecyclerView) findViewById(R.id.app_list);
+                        assert recyclerView2 != null;
+                        setupRecyclerView(recyclerView2, content1);
+                        recyclerViewTop.setAdapter(new SimpleItemRecyclerViewAdapter(content.ITEMS));
+                        recyclerView2.setAdapter(new SimpleItemRecyclerViewAdapter(content1.ITEMS));
+
+                        recyclerViewTop.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                            @Override
+                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                super.onScrolled(recyclerView, dx, dy);
+                                int visibleThreshold = 4;
+                                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                                int lastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                                if (!content.IS_LOADING && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                                    createInfiniteScrollListener(content, recyclerViewTop).onScrolledToEnd(lastVisibleItem);
+                                    content.IS_LOADING = true;
+                                }
+                            }
+                        });
+
+                        recyclerView2.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                            @Override
+                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                super.onScrolled(recyclerView, dx, dy);
+                                int visibleThreshold = 4;
+                                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                                int lastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                                if (!content1.IS_LOADING && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                                    createInfiniteScrollListener(content1, recyclerView2).onScrolledToEnd(lastVisibleItem);
+                                    content1.IS_LOADING = true;
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        thread.start();
 
         if (findViewById(R.id.app_detail_container) != null) {
             // The detail container view will be present only in the
@@ -90,8 +149,43 @@ public class AppListActivity extends AppCompatActivity {
         thread.start();
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, final DummyContent content) {
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setHasFixedSize(true);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(content.ITEMS));
+    }
+
+    private InfiniteScrollListener createInfiniteScrollListener(final DummyContent dummyContent, final RecyclerView recyclerView) {
+        return new InfiniteScrollListener(20, layoutManager) {
+            @Override public void onScrolledToEnd(final int firstVisibleItemPosition) {
+                // load your items here
+                // logic of loading items will be different depending on your specific use case
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            dummyContent.loadMoreItems();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        new Handler(Looper.getMainLooper()).post(new Runnable () {
+                            @Override
+                            public void run() {
+                                // when new items are loaded, combine old and new items, pass them to your adapter
+                                // and call refreshView(...) method from InfiniteScrollListener class to refresh RecyclerView
+                                refreshView(recyclerView, new SimpleItemRecyclerViewAdapter(dummyContent.ITEMS), firstVisibleItemPosition);
+                            }
+                        });
+                    }
+                });
+
+                thread.start();
+            }
+        };
     }
 
     public class SimpleItemRecyclerViewAdapter

@@ -13,6 +13,7 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,8 @@ import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
 import org.ethereum.geth.Transaction;
 import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * An activity representing a single App detail screen. This
@@ -36,9 +39,12 @@ public class AppDetailActivity extends AppCompatActivity {
     TextView appTitleHeader;
     TextView titleViewBody;
     TextView priceTextView;
-    float price = 0.0f;
-    String priceWei;
+    TextView developerTextView;
+    Button buyButton;
+    EthereumPrice price;
+    boolean free;
     int idApp = 0;
+    int idCat = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,9 @@ public class AppDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_detail);
 
         appTitleHeader = (TextView) findViewById(R.id.AppNameTitle);
+        developerTextView = (TextView) findViewById(R.id.developerName);
         priceTextView = (TextView) findViewById(R.id.AppPrice);
+        buyButton = (Button) findViewById(R.id.buyBtn);
         titleViewBody = (TextView) findViewById(R.id.AppNameBody);
         iconView = (ImageView) findViewById(R.id.iconView);
 
@@ -54,15 +62,36 @@ public class AppDetailActivity extends AppCompatActivity {
         DummyContent.DummyItem item = DummyContent.ITEMS.get(itemId);
 
         idApp = Integer.valueOf(item.id);
-        price = item.price;
+        price = new EthereumPrice(String.valueOf((long)item.price * 1000000000));
+        free = item.free;
 
         appTitleHeader.setText(item.content);
         titleViewBody.setText(item.content);
-        priceTextView.setText("Цена: " + String.valueOf(price) + " ETH");
+        developerTextView.setText(item.developer);
+        if (free) {
+            priceTextView.setText("Free");
+            buyButton.setText("Download");
+        } else {
+            String priceUnit = price.getUnits();
+            if  (priceUnit.equals("ETH")) {
+                priceTextView.setText("Price: " + String.valueOf(price.inEther()) + "ETH");
+                buyButton.setText("Buy: " + String.valueOf(price.inEther()));
+            } else if (priceUnit.equals("Gwei")) {
+                priceTextView.setText("Price: " + String.valueOf(price.inGwei()) + "Gwei");
+                buyButton.setText("Buy: " + String.valueOf(price.inGwei()));
+            } else {
+                priceTextView.setText("Price: " + String.valueOf(price.inWei()) + "Wei");
+                buyButton.setText("Buy: " + String.valueOf(price.inWei()));
+            }
 
+        }
     }
 
     public void buyApp(View view) {
+        if (free) {
+            displayDownloadingAlert();
+            return;
+        }
 
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -72,11 +101,13 @@ public class AppDetailActivity extends AppCompatActivity {
                     int nonce = APIUtils.api.getNonce(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex());
 
                     BigInt value = new BigInt(0);
-                    value.setInt64((long) 1100000000000000.0);
+//                    value.setInt64(price.inWei());
+                    value.setInt64(Long.decode("40000000000000000"));
 
                     Transaction tx = new Transaction(
-                            nonce, new Address(CryptoUtils.TEST_ADDRESS),
-                            value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), null);
+                            nonce, new Address(CryptoUtils.CONTRACT_ADDRESS),
+                            value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(String.valueOf(6), String.valueOf(1)));
+
                     try {
                         Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
                         Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
