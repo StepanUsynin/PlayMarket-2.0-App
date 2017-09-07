@@ -90,7 +90,7 @@ public class DummyContent {
         }
 
         for (int i = 0; i < apps.length(); i++) {
-            addItem(createDummyItem(apps.getJSONObject(i), i));
+            addItem(createDummyItem(apps.getJSONObject(i), ITEMS.size() + i));
         }
         IS_LOADING = false;
     }
@@ -101,12 +101,11 @@ public class DummyContent {
     }
 
     private DummyItem createDummyItem(JSONObject app, int position) throws JSONException {
-        long price = 0;
-        price = Long.parseLong(app.getString("value"));
+        String price = app.getString("value");
         String idApp = app.getString("nameApp");
         boolean free = (app.getInt("free") != 0);
 
-        return new DummyItem(String.valueOf(position), app.getString("idCTG"), idApp, app.getString("developer"), price, price, free, makeDetails(1));
+        return new DummyItem(String.valueOf(position), app.getString("idApp"), app.getString("idCTG"), idApp, app.getString("developer"), price, price, free, makeDetails(1));
     }
 
     private String makeDetails(int position) {
@@ -123,16 +122,18 @@ public class DummyContent {
      */
     public static class DummyItem {
         public final String id;
+        public final String appId;
         public final String content;
         public final String developer;
         public final String details;
-        public final float price;
-        public final long priceWei;
+        public final String price;
+        public final String priceWei;
         public final boolean free;
         public String category;
 
-        public DummyItem(String id, String category, String content, String developer, float price, long priceWei, boolean free, String details) {
+        public DummyItem(String id, String appId, String category, String content, String developer, String price, String priceWei, boolean free, String details) {
             this.id = id;
+            this.appId = appId;
             this.category = category;
             this.developer = developer;
             this.content = content;

@@ -39,24 +39,6 @@ public class IntroLogoActivity extends AppCompatActivity {
         startEtherNode();
         getNearestNodes();
         loadLoginPromptActivity();
-
-//        String gasPrice = APIUtils.api.getGasPrice();
-//        int nonce = APIUtils.api.getNonce(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex());
-//
-//        BigInt value = new BigInt(0);
-//        value.setInt64(price.inWei());
-//
-//        Transaction tx = new Transaction(
-//                nonce, new Address(CryptoUtils.TEST_ADDRESS),
-//                value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(String.valueOf(6), String.valueOf(1)).getBytes());
-//        try {
-//            Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
-//            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
     }
 
     protected void initViewVariables() {

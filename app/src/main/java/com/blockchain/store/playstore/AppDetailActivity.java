@@ -26,6 +26,7 @@ import org.ethereum.geth.Transaction;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 
 /**
  * An activity representing a single App detail screen. This
@@ -43,6 +44,7 @@ public class AppDetailActivity extends AppCompatActivity {
     Button buyButton;
     EthereumPrice price;
     boolean free;
+    String idApp2 = "";
     int idApp = 0;
     int idCat = 0;
 
@@ -62,26 +64,29 @@ public class AppDetailActivity extends AppCompatActivity {
         DummyContent.DummyItem item = DummyContent.ITEMS.get(itemId);
 
         idApp = Integer.valueOf(item.id);
-        price = new EthereumPrice(String.valueOf((long)item.price * 1000000000));
+        idApp2 = item.appId;
+        idCat = Integer.valueOf(item.category);
+        price = new EthereumPrice(String.valueOf(item.price));
         free = item.free;
 
         appTitleHeader.setText(item.content);
         titleViewBody.setText(item.content);
         developerTextView.setText(item.developer);
+
         if (free) {
             priceTextView.setText("Free");
             buyButton.setText("Download");
         } else {
             String priceUnit = price.getUnits();
             if  (priceUnit.equals("ETH")) {
-                priceTextView.setText("Price: " + String.valueOf(price.inEther()) + "ETH");
-                buyButton.setText("Buy: " + String.valueOf(price.inEther()));
+                priceTextView.setText("Price: " + price.getDisplayPrice());
+                buyButton.setText("Buy: " + price.getDisplayPrice());
             } else if (priceUnit.equals("Gwei")) {
-                priceTextView.setText("Price: " + String.valueOf(price.inGwei()) + "Gwei");
-                buyButton.setText("Buy: " + String.valueOf(price.inGwei()));
+                priceTextView.setText("Price: " + price.getDisplayPrice());
+                buyButton.setText("Buy: " + price.getDisplayPrice());
             } else {
-                priceTextView.setText("Price: " + String.valueOf(price.inWei()) + "Wei");
-                buyButton.setText("Buy: " + String.valueOf(price.inWei()));
+                priceTextView.setText("Price: " + price.getDisplayPrice());
+                buyButton.setText("Buy: " + price.getDisplayPrice());
             }
 
         }
@@ -101,12 +106,11 @@ public class AppDetailActivity extends AppCompatActivity {
                     int nonce = APIUtils.api.getNonce(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex());
 
                     BigInt value = new BigInt(0);
-//                    value.setInt64(price.inWei());
-                    value.setInt64(Long.decode("40000000000000000"));
+                    value.setInt64(price.inWei().longValue());
 
                     Transaction tx = new Transaction(
                             nonce, new Address(CryptoUtils.CONTRACT_ADDRESS),
-                            value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(String.valueOf(6), String.valueOf(1)));
+                            value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(idApp2, String.valueOf(idCat)));
 
                     try {
                         Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
