@@ -23,14 +23,19 @@ import static org.web3j.crypto.Hash.sha3;
 
 public class CryptoUtils {
 
-    public KeyManager keyManager;
+    public static KeyManager keyManager;
     public static EthDroid ethdroid;
 
     public static final String CONTRACT_ADDRESS = "0x77bC6e6B70029C9478265B15C8cF1e4E2fB7B133";
     public static final String TEST_ADDRESS = "0x5e5c1c8e03472666e0b9e218153869dcbc9c1e65";
 
+    public static KeyManager setupKeyManager(String dataDir) {
+        return KeyManager.newKeyManager(dataDir);
+    }
     public static void buildEtherNodeTestnet(String datadir) {
         try {
+            keyManager = KeyManager.newKeyManager(datadir);
+
             ethdroid = new EthDroid.Builder(datadir)
                     .onTestnet()
                     .withDatadirPath(datadir)

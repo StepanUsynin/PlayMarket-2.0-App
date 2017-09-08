@@ -11,6 +11,8 @@ import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
 import org.ethereum.geth.Transaction;
 
+import io.ethmobile.ethdroid.KeyManager;
+
 public class NewUserWelcomeActivity extends AppCompatActivity {
 
     public CryptoUtils crypto;
@@ -18,6 +20,7 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
     private String datadir;
     private String etherAddress;
     private TextView AddressTextView;
+    private KeyManager keyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +43,19 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
     protected void setupKeyManager() {
         try {
-            if (CryptoUtils.ethdroid.getMainAccount().getAddress().getHex().toString().length() <= 0) {
-                CryptoUtils.ethdroid.getKeyManager().newAccount("Test");
+             keyManager = CryptoUtils.setupKeyManager(getFilesDir().getAbsolutePath());
 
-                etherAddress = CryptoUtils.ethdroid.getMainAccount().getAddress().getHex().toString();
+            if (keyManager.getAccounts().isEmpty()) {
+                keyManager.newAccount("Test");
+
+                etherAddress = keyManager.getAccounts().get(0).getAddress().getHex();
 
                 Log.d("Ether", etherAddress);
                 AddressTextView.setText(etherAddress);
 
             } else {
 
-                etherAddress = CryptoUtils.ethdroid.getMainAccount().getAddress().getHex().toString();
+                etherAddress = keyManager.getAccounts().get(0).getAddress().getHex();
                 Log.d("Ether", etherAddress);
 
                 goToFeaturedAppsPage(null);
@@ -69,7 +74,7 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
                 3, new Address("0x5E5c1C8e03472666E0B9e218153869dCBc9c1e65"),
                 value, new BigInt(200000), new BigInt((long) 30000000000.0), null);
         try {
-            Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
+            Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
 
             Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
         } catch (Exception e) {

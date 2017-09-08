@@ -1,5 +1,6 @@
 package com.blockchain.store.playstore;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -95,6 +96,8 @@ public class AppDetailActivity extends AppCompatActivity {
     public void buyApp(View view) {
         if (free) {
             displayDownloadingAlert();
+            installApk();
+
             return;
         }
 
@@ -119,8 +122,10 @@ public class AppDetailActivity extends AppCompatActivity {
 
                         new Handler(Looper.getMainLooper()).post(new Runnable () {
                             @Override
-                            public void run() {
+                            public void run()
+                            {
                                 displayDownloadingAlert();
+                                installApk();
                             }
                         });
                     } catch (Exception e) {
@@ -138,6 +143,13 @@ public class AppDetailActivity extends AppCompatActivity {
 
     }
 
+    public void installApk() {
+        PermissionUtils.verifyStoragePermissions(this);
+        ApkInstaller apkInstaller = new ApkInstaller();
+        apkInstaller.setContext(getApplicationContext());
+        apkInstaller.execute("https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=261455");
+
+    }
 
     public void displayDownloadingAlert() {
         Toast.makeText(getApplicationContext(), "App Downloading!",
