@@ -1,5 +1,6 @@
 package com.blockchain.store.playstore;
 
+import android.os.Environment;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -14,7 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +38,11 @@ public class APIUtils {
     public static final String SEND_TX_URL = "/v1/sendRawTransaction";
     public static final String GET_APP_URL = "/v1/getApp";
 
-    public String nodeUrl = "https://n";
+    public static final String GET_APK_URL = "/v1/loadApp";
+
+    public static String nodeUrl = "https://n";
+
+    private static final int BUFFER_SIZE = 4096;
 
     public APIUtils(String node) {
         this.nodeUrl = nodeUrl + node + ".playmarket.io";
@@ -159,6 +168,53 @@ public class APIUtils {
         return true;
     }
 
+    public File sendTXAndDownload(String rawTransaction) throws IOException {
+        HttpClient client = createHttpClient();
+        HttpPost request = new HttpPost(nodeUrl + SEND_TX_URL);
+
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
+        nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
+        nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
+        nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
+
+        //Encoding POST data
+        try {
+            request.setEntity(new UrlEncodedFormEntity(nameValuePair));
+
+        } catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+
+        HttpResponse response;
+        response = client.execute(request);
+
+        String saveFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        File file = new File(saveFilePath);
+        file.mkdirs();
+        File outputFile = new File(file, "app.apk");
+        if(outputFile.exists()){
+            outputFile.delete();
+        }
+
+        InputStream inputStream = response.getEntity().getContent();
+
+        // opens an output stream to save into file
+        FileOutputStream outputStream = new FileOutputStream(outputFile);
+
+        int bytesRead = -1;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        outputStream.close();
+        inputStream.close();
+
+
+        return outputFile;
+    }
+
     public JSONArray start() throws IOException {
         HttpClient client = createHttpClient();
         HttpPost request = new HttpPost(nodeUrl + GET_APP_URL);
@@ -242,7 +298,15 @@ public class APIUtils {
         return apps;
     }
 
+    public static String getApkLink(String address, String idApp, String idCat) {
+        Log.d("NET", nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat);
+        return nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat;
+    }
 
+    public static String getSendTxLink(String tx, String idApp, String idCat) {
+        Log.d("NET", nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat);
+        return nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat;
+    }
 
     private HttpClient createHttpClient() {
         return new DefaultHttpClient();

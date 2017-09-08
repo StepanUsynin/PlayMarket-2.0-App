@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.INotificationSideChannel;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,8 +62,7 @@ public class AppDetailActivity extends AppCompatActivity {
         titleViewBody = (TextView) findViewById(R.id.AppNameBody);
         iconView = (ImageView) findViewById(R.id.iconView);
 
-        int itemId = getIntent().getExtras().getInt("item_id");
-        DummyContent.DummyItem item = DummyContent.ITEMS.get(itemId);
+        DummyContent.DummyItem item = (DummyContent.DummyItem) getIntent().getExtras().get("item");
 
         idApp = Integer.valueOf(item.id);
         idApp2 = item.appId;
@@ -94,17 +94,24 @@ public class AppDetailActivity extends AppCompatActivity {
     }
 
     public void buyApp(View view) {
-        if (free) {
-            displayDownloadingAlert();
-            installApk();
-
-            return;
-        }
-
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
                 try {
+                    boolean result = installApk();
+
+                    if (result == true) {
+                        new Handler(Looper.getMainLooper()).post(new Runnable () {
+                            @Override
+                            public void run()
+                            {
+                                displayDownloadingAlert();
+                            }
+                        });
+
+                        return;
+                    }
+
                     String gasPrice = APIUtils.api.getGasPrice();
                     int nonce = APIUtils.api.getNonce(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex());
 
@@ -118,16 +125,20 @@ public class AppDetailActivity extends AppCompatActivity {
                     try {
                         Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
                         Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
-                        APIUtils.api.sendTX(CryptoUtils.getRawTransaction(transaction));
+                        installApkAfterPurchase(CryptoUtils.getRawTransaction(transaction));
 
-                        new Handler(Looper.getMainLooper()).post(new Runnable () {
-                            @Override
-                            public void run()
-                            {
-                                displayDownloadingAlert();
-                                installApk();
-                            }
-                        });
+                        if (result == true) {
+                            new Handler(Looper.getMainLooper()).post(new Runnable () {
+                                @Override
+                                public void run()
+                                {
+                                    displayDownloadingAlert();
+                                }
+                            });
+                        } else {
+
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -143,12 +154,26 @@ public class AppDetailActivity extends AppCompatActivity {
 
     }
 
-    public void installApk() {
+    public boolean installApk() {
         PermissionUtils.verifyStoragePermissions(this);
         ApkInstaller apkInstaller = new ApkInstaller();
         apkInstaller.setContext(getApplicationContext());
-        apkInstaller.execute("https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=261455");
+        apkInstaller.execute(APIUtils.getApkLink(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex(), idApp2, String.valueOf(idCat)));
 
+        while (apkInstaller.isDownloading) {}
+
+        return apkInstaller.successful;
+    }
+
+    public boolean installApkAfterPurchase(String tx) {
+        PermissionUtils.verifyStoragePermissions(this);
+        ApkInstaller apkInstaller = new ApkInstaller();
+        apkInstaller.setContext(getApplicationContext());
+        apkInstaller.execute(APIUtils.getSendTxLink("0x" + tx, idApp2, String.valueOf(idCat)));
+
+        while (apkInstaller.isDownloading) {}
+
+        return apkInstaller.successful;
     }
 
     public void displayDownloadingAlert() {

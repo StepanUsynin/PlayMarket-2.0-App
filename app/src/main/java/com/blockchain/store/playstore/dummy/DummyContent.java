@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,17 +19,17 @@ import java.util.Map;
  * Android template wizards.
  * <p>
  */
-public class DummyContent {
+public class DummyContent implements Serializable{
 
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public List<DummyItem> ITEMS = new ArrayList<DummyItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
     public boolean READY = false;
     public boolean IS_LOADING = false;
@@ -52,7 +53,7 @@ public class DummyContent {
                     if (category.equals("")) {
                         apps = APIUtils.api.start();
                     } else {
-                        apps = APIUtils.api.pageCategory(category, 0, 5);
+                        apps = APIUtils.api.pageCategory(category, 1, 5);
                     }
 
                     for (int i = 0; i < apps.length(); i++) {
@@ -83,7 +84,7 @@ public class DummyContent {
         }
 
         IS_LOADING = true;
-        JSONArray apps = APIUtils.api.pageCategory(categoryId, ITEMS.size(), 1);
+        JSONArray apps = APIUtils.api.pageCategory(categoryId, ITEMS.size(), 5);
 
         if (apps.length() == 0) {
             NO_MORE_CONTENT = true;
@@ -120,7 +121,7 @@ public class DummyContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
+    public static class DummyItem implements Serializable{
         public final String id;
         public final String appId;
         public final String content;

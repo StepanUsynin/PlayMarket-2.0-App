@@ -1,11 +1,11 @@
 package com.blockchain.store.playstore;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.net.HttpURLConnection;
+    import java.net.URL;
 
 /**
  * A utility that downloads a file from a URL.
@@ -22,7 +22,7 @@ public class HttpDownloadUtility {
      * @param saveDir path of the directory to save the file
      * @throws IOException
      */
-    public static void downloadFile(String fileURL, File saveDir)
+    public static boolean downloadFile(String fileURL, File saveDir)
             throws IOException {
         URL url = new URL(fileURL);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
@@ -72,8 +72,12 @@ public class HttpDownloadUtility {
             System.out.println("File downloaded");
         } else {
             System.out.println("No file to download. Server replied HTTP code: " + responseCode);
+            httpConn.disconnect();
+            return false;
         }
         httpConn.disconnect();
+
+        return true;
     }
 }
 

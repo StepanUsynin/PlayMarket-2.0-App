@@ -32,6 +32,7 @@ public class CryptoUtils {
     public static KeyManager setupKeyManager(String dataDir) {
         return KeyManager.newKeyManager(dataDir);
     }
+
     public static void buildEtherNodeTestnet(String datadir) {
         try {
             keyManager = KeyManager.newKeyManager(datadir);

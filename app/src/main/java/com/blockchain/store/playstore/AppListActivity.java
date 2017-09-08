@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -225,7 +226,7 @@ public class AppListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, AppDetailActivity.class);
-                        intent.putExtra("item_id", (int)Integer.valueOf(holder.mItem.id));
+                        intent.putExtra("item", holder.mItem);
 
                         context.startActivity(intent);
                     }

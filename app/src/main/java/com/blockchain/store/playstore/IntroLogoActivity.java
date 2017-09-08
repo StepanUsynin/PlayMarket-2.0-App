@@ -35,10 +35,12 @@ public class IntroLogoActivity extends AppCompatActivity {
         initViewVariables();
         setLogoTextFont();
         setupAndPlayVideo();
+        PermissionUtils.verifyStoragePermissions(this);
         setDatadir();
         startEtherNode();
         getNearestNodes();
         loadLoginPromptActivity();
+
     }
 
     protected void initViewVariables() {

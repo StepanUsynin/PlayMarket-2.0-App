@@ -23,6 +23,9 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
         context = contextf;
     }
 
+    public boolean successful = true;
+    public boolean isDownloading = true;
+
     @Override
     protected Void doInBackground(String... arg0) {
         try {
@@ -41,15 +44,18 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
 
             HttpDownloadUtility downloader = new HttpDownloadUtility();
             try {
-                downloader.downloadFile(arg0[0], outputFile);
+                if (!downloader.downloadFile(arg0[0], outputFile)) {
+                    successful = false;
+                    isDownloading = false;
+                    return null;
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                // only for gingerbread and newer versions
-            intent.setDataAndType(FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".com.blockchain.store.playstore", outputFile), "application/vnd.android.package-archive");
+                intent.setDataAndType(FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".com.blockchain.store.playstore", outputFile), "application/vnd.android.package-archive");
             } else {
                 intent.setDataAndType(Uri.parse("file://" + outputFile), "application/vnd.android.package-archive");
             }
@@ -60,6 +66,8 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
         } catch (Exception e) {
             Log.e("APK", "Install error! " + e.getMessage());
         }
+
+        isDownloading = false;
 
         return null;
     }
