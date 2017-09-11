@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Playstore</string>
+    <string name="app_name">PlayMarket 2.0</string>
     <string name="title_app_list">Apps</string>
     <string name="title_app_detail">App Detail</string>
 </resources>

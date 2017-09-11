@@ -30,6 +30,8 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 
+import io.ethmobile.ethdroid.KeyManager;
+
 /**
  * An activity representing a single App detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
@@ -50,10 +52,14 @@ public class AppDetailActivity extends AppCompatActivity {
     int idApp = 0;
     int idCat = 0;
 
+    private KeyManager keyManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_detail);
+
+        setupKeyManager();
 
         appTitleHeader = (TextView) findViewById(R.id.AppNameTitle);
         developerTextView = (TextView) findViewById(R.id.developerName);
@@ -93,6 +99,10 @@ public class AppDetailActivity extends AppCompatActivity {
         }
     }
 
+    protected void setupKeyManager() {
+        keyManager = CryptoUtils.setupKeyManager(getFilesDir().getAbsolutePath());
+    }
+
     public void buyApp(View view) {
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -113,7 +123,7 @@ public class AppDetailActivity extends AppCompatActivity {
                     }
 
                     String gasPrice = APIUtils.api.getGasPrice();
-                    int nonce = APIUtils.api.getNonce(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex());
+                    int nonce = APIUtils.api.getNonce(keyManager.getAccounts().get(0).getAddress().getHex());
 
                     BigInt value = new BigInt(0);
                     value.setInt64(price.inWei().longValue());
@@ -123,7 +133,7 @@ public class AppDetailActivity extends AppCompatActivity {
                             value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(idApp2, String.valueOf(idCat)));
 
                     try {
-                        Transaction transaction = CryptoUtils.ethdroid.getKeyManager().getKeystore().signTxPassphrase(CryptoUtils.ethdroid.getMainAccount(), "Test", tx, new BigInt(3));
+                        Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
                         Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
                         installApkAfterPurchase(CryptoUtils.getRawTransaction(transaction));
 
@@ -158,7 +168,11 @@ public class AppDetailActivity extends AppCompatActivity {
         PermissionUtils.verifyStoragePermissions(this);
         ApkInstaller apkInstaller = new ApkInstaller();
         apkInstaller.setContext(getApplicationContext());
-        apkInstaller.execute(APIUtils.getApkLink(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex(), idApp2, String.valueOf(idCat)));
+        try {
+            apkInstaller.execute(APIUtils.getApkLink(keyManager.getAccounts().get(0).getAddress().getHex(), idApp2, String.valueOf(idCat)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         while (apkInstaller.isDownloading) {}
 

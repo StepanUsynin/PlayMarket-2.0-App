@@ -1,5 +1,8 @@
 package com.blockchain.store.playstore;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,7 +42,16 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
     protected void setupView() {
         AddressTextView = (TextView) findViewById(R.id.AddressTextView);
+        AddressTextView.setOnClickListener(copyAddressToClipboard);
     }
+
+    private View.OnClickListener copyAddressToClipboard = new View.OnClickListener() {
+        public void onClick(View v) {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("address", etherAddress);
+            clipboard.setPrimaryClip(clip);
+        }
+    };
 
     protected void setupKeyManager() {
         try {

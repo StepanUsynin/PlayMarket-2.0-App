@@ -25,6 +25,9 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
+import io.ethmobile.ethdroid.KeyManager;
+
+import static com.blockchain.store.playstore.R.attr.keylines;
 import static com.blockchain.store.playstore.R.attr.layoutManager;
 
 /**
@@ -49,11 +52,15 @@ public class AppListActivity extends AppCompatActivity {
     private RecyclerView recyclerViewTop;
     private RecyclerView recyclerView2;
     private LinearLayoutManager layoutManager;
+    private KeyManager keyManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_list);
+
+        setupKeyManager();
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -125,12 +132,16 @@ public class AppListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {}
 
+    protected void setupKeyManager() {
+        keyManager = CryptoUtils.setupKeyManager(getFilesDir().getAbsolutePath());
+    }
+
     public void displayBalanceAlert() {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final String balance = String.valueOf(APIUtils.api.getBalance(CryptoUtils.ethdroid.getMainAccount().getAddress().getHex().toString()));
+                    final String balance = String.valueOf(APIUtils.api.getBalance(keyManager.getAccounts().get(0).getAddress().getHex()));
 
                     final String ether = balance.substring(0, balance.length() - 18);
                     new Handler(Looper.getMainLooper()).post(new Runnable () {
