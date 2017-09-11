@@ -40,12 +40,14 @@
         <activity
             android:name=".AppListActivity"
             android:label="@string/title_app_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".AppDetailActivity"
             android:label="@string/title_app_detail"
             android:parentActivityName=".AppListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.blockchain.store.playstore.AppListActivity" />

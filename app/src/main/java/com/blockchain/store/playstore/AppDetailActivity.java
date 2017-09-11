@@ -201,4 +201,11 @@ public class AppDetailActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Purchase Processing!",
                 Toast.LENGTH_LONG).show();
     }
+
+    public void investApp(View view) {
+    }
+
+    public void goBackToList(View view) {
+        finish();
+    }
 }
