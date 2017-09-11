@@ -94,8 +94,8 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
         crypto = new CryptoUtils();
     }
 
-    private void goToFeaturedAppsPage(View view) {
-        Intent myIntent=new Intent(getApplicationContext(),AppListActivity.class );
+    public void goToFeaturedAppsPage(View view) {
+        Intent myIntent=new Intent(getApplicationContext(), AppListActivity.class );
         startActivityForResult(myIntent,0);
     }
 }

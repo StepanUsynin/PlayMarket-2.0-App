@@ -34,6 +34,7 @@ public class AppContent implements Serializable{
     public boolean IS_LOADING = false;
     public boolean NO_MORE_CONTENT = false;
     public String categoryId = "";
+    public int FETCH_COUNT = 8;
 
     public AppContent(final String category) {
 
@@ -52,7 +53,7 @@ public class AppContent implements Serializable{
                     if (category.equals("")) {
                         apps = APIUtils.api.start();
                     } else {
-                        apps = APIUtils.api.pageCategory(category, 1, 5);
+                        apps = APIUtils.api.pageCategory(category, 1, FETCH_COUNT);
                     }
 
                     for (int i = 0; i < apps.length(); i++) {
@@ -83,7 +84,7 @@ public class AppContent implements Serializable{
         }
 
         IS_LOADING = true;
-        JSONArray apps = APIUtils.api.pageCategory(categoryId, ITEMS.size(), 5);
+        JSONArray apps = APIUtils.api.pageCategory(categoryId, ITEMS.size() + 1, FETCH_COUNT);
 
         if (apps.length() == 0) {
             NO_MORE_CONTENT = true;

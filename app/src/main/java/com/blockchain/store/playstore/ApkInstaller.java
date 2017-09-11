@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static android.support.v4.content.FileProvider.getUriForFile;
+
 /**
  * Created by samsheff on 23/08/2017.
  */
@@ -38,19 +40,20 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
             c.setRequestMethod("GET");
             c.setDoOutput(true);
 
-
             File outputFile;
             String filePath;
+            Uri contentUri;
 
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+            if (BuildUtils.shouldUseContentUri()) {
+                File path = context.getFilesDir();
+                outputFile = new File(path, "app.apk");
             } else {
-                filePath = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
+                outputFile = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app.apk");
             }
 
-            File file = new File(filePath);
-            file.mkdirs();
-            outputFile = new File(file, APK_FILENAME);
+//            File file = new File(filePath);
+//            file.mkdirs();
+//            outputFile = new File(file, APK_FILENAME);
 
             if(outputFile.exists()){
                 outputFile.delete();
@@ -68,7 +71,11 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
             }
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(getUriForApk(outputFile), APK_MIME_TYPE);
+            if (BuildUtils.shouldUseContentUri()) {
+                intent.setDataAndType(FileProvider.getUriForFile(context, "com.blockchain.store.playstore.fileprovider", outputFile), APK_MIME_TYPE);
+            } else {
+                intent.setDataAndType(Uri.parse("file://" + outputFile), APK_MIME_TYPE);
+            }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);
@@ -84,14 +91,10 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
     }
 
     private Uri getUriForApk(File file) {
-        if (shouldUseContentUri()) {
+        if (BuildUtils.shouldUseContentUri()) {
             return Uri.parse("content://" + file);
         } else {
             return Uri.parse("file://" + file);
         }
-    }
-
-    public static boolean shouldUseContentUri() {
-        return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 }

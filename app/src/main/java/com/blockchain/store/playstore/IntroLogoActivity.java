@@ -6,17 +6,12 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.VideoView;
-
-import org.ethereum.geth.Address;
-import org.ethereum.geth.BigInt;
-import org.ethereum.geth.Transaction;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,8 +36,8 @@ public class IntroLogoActivity extends AppCompatActivity {
         setDatadir();
         startEtherNode();
         getNearestNodes();
+        BuildUtils.printPhoneInfo();
         loadLoginPromptActivity();
-
     }
 
     @Override
