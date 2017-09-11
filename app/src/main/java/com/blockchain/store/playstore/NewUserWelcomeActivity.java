@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
@@ -50,8 +51,15 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("address", etherAddress);
             clipboard.setPrimaryClip(clip);
+
+            showCopiedAlert();
         }
     };
+
+    private void showCopiedAlert() {
+        Toast.makeText(getApplicationContext(), "Address Copied!",
+                Toast.LENGTH_LONG).show();
+    }
 
     protected void setupKeyManager() {
         try {
