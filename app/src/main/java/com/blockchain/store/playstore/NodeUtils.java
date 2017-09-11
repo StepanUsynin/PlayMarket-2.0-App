@@ -40,6 +40,7 @@ public class NodeUtils {
 
         return nodes;
     }
+
     public static ArrayList getCoordinates() throws IOException {
         HttpClient client = new DefaultHttpClient();
 

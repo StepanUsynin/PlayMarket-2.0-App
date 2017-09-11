@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore.dummy;
+package com.blockchain.store.playstore;
 
 import com.blockchain.store.playstore.APIUtils;
 
@@ -8,35 +8,34 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Helper class for providing sample content for user interfaces created by
+ * Helper class for providing sample name for user interfaces created by
  * Android template wizards.
  * <p>
  */
-public class DummyContent implements Serializable{
+public class AppContent implements Serializable{
 
     /**
      * An array of sample (dummy) items.
      */
-    public List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public List<AppItem> ITEMS = new ArrayList<AppItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public Map<String, AppItem> ITEM_MAP = new HashMap<String, AppItem>();
 
     public boolean READY = false;
     public boolean IS_LOADING = false;
     public boolean NO_MORE_CONTENT = false;
     public String categoryId = "";
 
-    public DummyContent(final String category) {
+    public AppContent(final String category) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -96,17 +95,17 @@ public class DummyContent implements Serializable{
         IS_LOADING = false;
     }
 
-    private void addItem(DummyItem item) {
+    private void addItem(AppItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private DummyItem createDummyItem(JSONObject app, int position) throws JSONException {
+    private AppItem createDummyItem(JSONObject app, int position) throws JSONException {
         String price = app.getString("value");
         String idApp = app.getString("nameApp");
         boolean free = (app.getInt("free") != 0);
 
-        return new DummyItem(String.valueOf(position), app.getString("idApp"), app.getString("idCTG"), idApp, app.getString("developer"), price, price, free, makeDetails(1));
+        return new AppItem(String.valueOf(position), app.getString("idApp"), app.getString("idCTG"), idApp, app.getString("developer"), price, price, free, makeDetails(1));
     }
 
     private String makeDetails(int position) {
@@ -119,12 +118,12 @@ public class DummyContent implements Serializable{
     }
 
     /**
-     * A dummy item representing a piece of content.
+     * A dummy item representing a piece of name.
      */
-    public static class DummyItem implements Serializable{
+    public static class AppItem implements Serializable{
         public final String id;
         public final String appId;
-        public final String content;
+        public final String name;
         public final String developer;
         public final String details;
         public final String price;
@@ -132,12 +131,12 @@ public class DummyContent implements Serializable{
         public final boolean free;
         public String category;
 
-        public DummyItem(String id, String appId, String category, String content, String developer, String price, String priceWei, boolean free, String details) {
+        public AppItem(String id, String appId, String category, String content, String developer, String price, String priceWei, boolean free, String details) {
             this.id = id;
             this.appId = appId;
             this.category = category;
             this.developer = developer;
-            this.content = content;
+            this.name = content;
             this.priceWei = priceWei;
             this.details = details;
             this.price = price;
@@ -146,7 +145,7 @@ public class DummyContent implements Serializable{
 
         @Override
         public String toString() {
-            return content;
+            return name;
         }
     }
 }

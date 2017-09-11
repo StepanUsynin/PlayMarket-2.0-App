@@ -19,11 +19,12 @@ import io.ethmobile.ethdroid.KeyManager;
 public class NewUserWelcomeActivity extends AppCompatActivity {
 
     public CryptoUtils crypto;
+    private KeyManager keyManager;
 
     private String datadir;
     private String etherAddress;
     private TextView AddressTextView;
-    private KeyManager keyManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,6 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
         setupView();
         setDatadir();
         setupCryptoUtils();
-        generateTestTransaction();
         setupKeyManager();
     }
 
@@ -55,7 +55,7 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
     protected void setupKeyManager() {
         try {
-             keyManager = CryptoUtils.setupKeyManager(getFilesDir().getAbsolutePath());
+             keyManager = CryptoUtils.setupKeyManager(datadir);
 
             if (keyManager.getAccounts().isEmpty()) {
                 keyManager.newAccount("Test");
@@ -78,22 +78,6 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
         }
     }
 
-    private void generateTestTransaction() {
-        BigInt value = new BigInt(0);
-        value.setInt64((long) 1100000000000000.0);
-
-        Transaction tx = new Transaction(
-                3, new Address("0x5E5c1C8e03472666E0B9e218153869dCBc9c1e65"),
-                value, new BigInt(200000), new BigInt((long) 30000000000.0), null);
-        try {
-            Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
-
-            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     protected void setDatadir() {
         datadir = getFilesDir().getAbsolutePath();
     }
@@ -102,7 +86,7 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
         crypto = new CryptoUtils();
     }
 
-    public void goToFeaturedAppsPage(View view) {
+    private void goToFeaturedAppsPage(View view) {
         Intent myIntent=new Intent(getApplicationContext(),AppListActivity.class );
         startActivityForResult(myIntent,0);
     }

@@ -11,17 +11,22 @@ public class EthereumPrice {
 
     public BigDecimal wei = BigDecimal.ZERO;
 
+    public static String ETH = "ETH";
+    public static String ETHER = "Ether";
+    public static String GWEI = "Gwei";
+    public static String WEI = "Wei";
+
     public EthereumPrice (String price) {
         wei = new BigDecimal(price);
     }
 
     public String getUnits() {
         if (inEther().compareTo(new BigDecimal(0.0001)) == 1) {
-            return "ETH";
+            return ETH;
         } else if (inGwei().compareTo(new BigDecimal(0.0001)) == 1) {
-            return "Gwei";
+            return GWEI;
         } else {
-            return "Wei";
+            return WEI;
         }
     }
 
@@ -48,12 +53,12 @@ public class EthereumPrice {
         df.setGroupingUsed(false);
 
         String priceUnit = getUnits();
-        if  (priceUnit.equals("ETH")) {
-            return df.format(inEther()) + " ETH";
-        } else if (priceUnit.equals("Gwei")) {
-            return df.format(inGwei()) + " Gwei";
+        if  (priceUnit.equals(ETH)) {
+            return df.format(inEther()) + " " + ETH;
+        } else if (priceUnit.equals(GWEI)) {
+            return df.format(inGwei()) + " " + GWEI;
         } else {
-            return df.format(inWei()) + " Wei";
+            return df.format(inWei()) + " " + WEI;
         }
     }
 }

@@ -172,9 +172,7 @@ public class APIUtils {
         HttpClient client = createHttpClient();
         HttpPost request = new HttpPost(nodeUrl + SEND_TX_URL);
 
-        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
-        nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
-        nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
         nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
 
         //Encoding POST data

@@ -27,6 +27,9 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
     public boolean successful = true;
     public boolean isDownloading = true;
 
+    public static String APK_MIME_TYPE = "application/vnd.android.package-archive";
+    public static String APK_FILENAME = "app.apk";
+
     @Override
     protected Void doInBackground(String... arg0) {
         try {
@@ -37,25 +40,20 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
 
 
             File outputFile;
+            String filePath;
+
             if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                String PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-
-                File file = new File(PATH);
-                file.mkdirs();
-                outputFile = new File(file, "app.apk");
-
-                if(outputFile.exists()){
-                    outputFile.delete();
-                }
+                filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
             } else {
-                String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
-                File file = new File(PATH);
-                file.mkdirs();
-                outputFile = new File(file, "app.apk");
+                filePath = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
+            }
 
-                if(outputFile.exists()){
-                    outputFile.delete();
-                }
+            File file = new File(filePath);
+            file.mkdirs();
+            outputFile = new File(file, APK_FILENAME);
+
+            if(outputFile.exists()){
+                outputFile.delete();
             }
 
             HttpDownloadUtility downloader = new HttpDownloadUtility();
@@ -70,12 +68,8 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
             }
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                intent.setDataAndType(Uri.parse("content://" + outputFile), "application/vnd.android.package-archive");
-            } else {
-                intent.setDataAndType(Uri.parse("file://" + outputFile), "application/vnd.android.package-archive");
-            }
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // without this flag android returned a intent error!
+            intent.setDataAndType(getUriForApk(outputFile), APK_MIME_TYPE);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);
 
@@ -87,5 +81,17 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
         isDownloading = false;
 
         return null;
+    }
+
+    private Uri getUriForApk(File file) {
+        if (shouldUseContentUri()) {
+            return Uri.parse("content://" + file);
+        } else {
+            return Uri.parse("file://" + file);
+        }
+    }
+
+    public static boolean shouldUseContentUri() {
+        return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 }

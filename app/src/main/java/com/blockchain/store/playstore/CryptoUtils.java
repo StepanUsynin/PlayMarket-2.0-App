@@ -4,6 +4,8 @@ import android.util.Log;
 
 import org.apache.commons.codec.binary.Hex;
 import org.ethereum.geth.Account;
+import org.ethereum.geth.Address;
+import org.ethereum.geth.BigInt;
 import org.ethereum.geth.Transaction;
 import org.web3j.abi.datatypes.Bytes;
 import org.web3j.crypto.Hash;
@@ -98,5 +100,21 @@ public class CryptoUtils {
             b[i] = (byte) v;
         }
         return b;
+    }
+
+    public static void generateTestTransaction() {
+        BigInt value = new BigInt(0);
+        value.setInt64((long) 1100000000000000.0);
+
+        Transaction tx = new Transaction(
+                3, new Address("0x5E5c1C8e03472666E0B9e218153869dCBc9c1e65"),
+                value, new BigInt(200000), new BigInt((long) 30000000000.0), null);
+        try {
+            Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
+
+            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

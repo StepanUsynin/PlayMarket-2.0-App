@@ -1,34 +1,19 @@
 package com.blockchain.store.playstore;
 
-import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.INotificationSideChannel;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blockchain.store.playstore.dummy.DummyContent;
-
 import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
 import org.ethereum.geth.Transaction;
-import org.json.JSONObject;
-
-import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 
 import io.ethmobile.ethdroid.KeyManager;
 
@@ -68,7 +53,7 @@ public class AppDetailActivity extends AppCompatActivity {
         titleViewBody = (TextView) findViewById(R.id.AppNameBody);
         iconView = (ImageView) findViewById(R.id.iconView);
 
-        DummyContent.DummyItem item = (DummyContent.DummyItem) getIntent().getExtras().get("item");
+        AppContent.AppItem item = (AppContent.AppItem) getIntent().getExtras().get("item");
 
         idApp = Integer.valueOf(item.id);
         idApp2 = item.appId;
@@ -76,8 +61,8 @@ public class AppDetailActivity extends AppCompatActivity {
         price = new EthereumPrice(String.valueOf(item.price));
         free = item.free;
 
-        appTitleHeader.setText(item.content);
-        titleViewBody.setText(item.content);
+        appTitleHeader.setText(item.name);
+        titleViewBody.setText(item.name);
         developerTextView.setText(item.developer);
 
         if (free) {
@@ -110,7 +95,7 @@ public class AppDetailActivity extends AppCompatActivity {
                 try {
                     boolean result = installApk();
 
-                    if (result == true) {
+                    if (result) {
                         new Handler(Looper.getMainLooper()).post(new Runnable () {
                             @Override
                             public void run()
@@ -134,7 +119,9 @@ public class AppDetailActivity extends AppCompatActivity {
 
                     try {
                         Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
+
                         Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
+
                         installApkAfterPurchase(CryptoUtils.getRawTransaction(transaction));
 
                         if (result == true) {
@@ -166,8 +153,10 @@ public class AppDetailActivity extends AppCompatActivity {
 
     public boolean installApk() {
         PermissionUtils.verifyStoragePermissions(this);
+
         ApkInstaller apkInstaller = new ApkInstaller();
         apkInstaller.setContext(getApplicationContext());
+
         try {
             apkInstaller.execute(APIUtils.getApkLink(keyManager.getAccounts().get(0).getAddress().getHex(), idApp2, String.valueOf(idCat)));
         } catch (Exception e) {
@@ -181,6 +170,7 @@ public class AppDetailActivity extends AppCompatActivity {
 
     public boolean installApkAfterPurchase(String tx) {
         PermissionUtils.verifyStoragePermissions(this);
+
         ApkInstaller apkInstaller = new ApkInstaller();
         apkInstaller.setContext(getApplicationContext());
         apkInstaller.execute(APIUtils.getSendTxLink("0x" + tx, idApp2, String.valueOf(idCat)));
