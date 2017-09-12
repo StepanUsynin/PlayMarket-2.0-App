@@ -1,5 +1,6 @@
 package com.blockchain.store.playstore;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -64,6 +65,10 @@ public class AppDetailActivity extends AppCompatActivity {
         appTitleHeader.setText(item.name);
         titleViewBody.setText(item.name);
         developerTextView.setText(item.developer);
+
+        if (item.icon != null) {
+            iconView.setImageBitmap(ImageUtils.getBitmapFromBase64(item.icon));
+        }
 
         if (free) {
             priceTextView.setText("Free");

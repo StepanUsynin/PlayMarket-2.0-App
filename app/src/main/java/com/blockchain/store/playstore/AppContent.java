@@ -1,5 +1,7 @@
 package com.blockchain.store.playstore;
 
+import android.graphics.Bitmap;
+
 import com.blockchain.store.playstore.APIUtils;
 
 import org.json.JSONArray;
@@ -34,7 +36,7 @@ public class AppContent implements Serializable{
     public boolean IS_LOADING = false;
     public boolean NO_MORE_CONTENT = false;
     public String categoryId = "";
-    public int FETCH_COUNT = 8;
+    public int FETCH_COUNT = 1;
 
     public AppContent(final String category) {
 
@@ -57,7 +59,7 @@ public class AppContent implements Serializable{
                     }
 
                     for (int i = 0; i < apps.length(); i++) {
-                        addItem(createDummyItem(apps.getJSONObject(i), i));
+                        addItem(createAppItem(apps.getJSONObject(i), i));
                     }
 
                     if (apps.length() == 0) {
@@ -91,7 +93,7 @@ public class AppContent implements Serializable{
         }
 
         for (int i = 0; i < apps.length(); i++) {
-            addItem(createDummyItem(apps.getJSONObject(i), ITEMS.size() + i));
+            addItem(createAppItem(apps.getJSONObject(i), ITEMS.size() + i));
         }
         IS_LOADING = false;
     }
@@ -101,12 +103,21 @@ public class AppContent implements Serializable{
         ITEM_MAP.put(item.id, item);
     }
 
-    private AppItem createDummyItem(JSONObject app, int position) throws JSONException {
+    private AppItem createAppItem(JSONObject app, int position) throws JSONException {
         String price = app.getString("value");
         String idApp = app.getString("nameApp");
         boolean free = (app.getInt("free") != 0);
 
-        return new AppItem(String.valueOf(position), app.getString("idApp"), app.getString("idCTG"), idApp, app.getString("developer"), price, price, free, makeDetails(1));
+        String icon = null;
+        try {
+            icon = app.getString("img");
+        } catch (org.json.JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new AppItem(String.valueOf(position), app.getString("idApp"),
+                    app.getString("idCTG"), idApp, app.getString("developer"),
+                    price, price, free, makeDetails(1), icon);
     }
 
     private String makeDetails(int position) {
@@ -131,8 +142,9 @@ public class AppContent implements Serializable{
         public final String priceWei;
         public final boolean free;
         public String category;
+        public String icon;
 
-        public AppItem(String id, String appId, String category, String content, String developer, String price, String priceWei, boolean free, String details) {
+        public AppItem(String id, String appId, String category, String content, String developer, String price, String priceWei, boolean free, String details, String icon) {
             this.id = id;
             this.appId = appId;
             this.category = category;
@@ -142,6 +154,7 @@ public class AppContent implements Serializable{
             this.details = details;
             this.price = price;
             this.free = free;
+            this.icon = icon;
         }
 
         @Override
