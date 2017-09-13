@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class AppListActivity extends AppCompatActivity {
     private RecyclerView recyclerViewTop;
     private RecyclerView recyclerView2;
     private LinearLayoutManager layoutManager;
+    private ProgressBar loadingSpinner;
     private KeyManager keyManager;
 
 
@@ -74,6 +76,12 @@ public class AppListActivity extends AppCompatActivity {
 
     protected void setupKeyManager() {
         keyManager = CryptoUtils.setupKeyManager(getFilesDir().getAbsolutePath());
+    }
+
+    protected void hideLoadingSpinner() {
+
+        loadingSpinner = (ProgressBar) findViewById(R.id.loadingSpinner);
+        loadingSpinner.setVisibility(View.GONE);
     }
 
     public void displayBalanceAlert() {
@@ -110,7 +118,7 @@ public class AppListActivity extends AppCompatActivity {
     }
 
     private InfiniteScrollListener createInfiniteScrollListener(final AppContent AppContent, final RecyclerView recyclerView) {
-        return new InfiniteScrollListener(20, layoutManager) {
+        return new InfiniteScrollListener(1, layoutManager) {
             @Override public void onScrolledToEnd(final int firstVisibleItemPosition) {
                 // load your items here
                 // logic of loading items will be different depending on your specific use case
@@ -242,7 +250,7 @@ public class AppListActivity extends AppCompatActivity {
                             @Override
                             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                                 super.onScrolled(recyclerView, dx, dy);
-                                int visibleThreshold = 4;
+                                int visibleThreshold = 6;
                                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                                 int lastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
                                 if (!content.IS_LOADING && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
@@ -256,7 +264,7 @@ public class AppListActivity extends AppCompatActivity {
                             @Override
                             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                                 super.onScrolled(recyclerView, dx, dy);
-                                int visibleThreshold = 4;
+                                int visibleThreshold = 6;
                                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                                 int lastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
                                 if (!content1.IS_LOADING && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
@@ -265,6 +273,8 @@ public class AppListActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
+                        hideLoadingSpinner();
                     }
                 });
             }

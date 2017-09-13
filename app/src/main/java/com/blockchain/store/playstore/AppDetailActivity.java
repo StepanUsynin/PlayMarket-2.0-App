@@ -113,6 +113,15 @@ public class AppDetailActivity extends AppCompatActivity {
                         });
 
                         return;
+                    } else if (APIUtils.api.getBalance(keyManager.getAccounts().get(0).getAddress().getHex()).equals("0")) {
+                        new Handler(Looper.getMainLooper()).post(new Runnable () {
+                            @Override
+                            public void run()
+                            {
+                                displayNotEnoughMoneyAlert();
+                            }
+                        });
+                        return;
                     }
 
                     String gasPrice = APIUtils.api.getGasPrice();
@@ -207,6 +216,11 @@ public class AppDetailActivity extends AppCompatActivity {
 
     public void displayProccessingAlert() {
         Toast.makeText(getApplicationContext(), "Purchase Processing!",
+                Toast.LENGTH_LONG).show();
+    }
+
+    public void displayNotEnoughMoneyAlert() {
+        Toast.makeText(getApplicationContext(), "Insufficient Funds!",
                 Toast.LENGTH_LONG).show();
     }
 
