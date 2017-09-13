@@ -72,13 +72,13 @@ public class HttpDownloadUtility {
             inputStream.close();
 
             Log.d("NET", "File downloaded");
+            httpConn.disconnect();
         } else {
             Log.d("NET", "No file to download. Server replied HTTP code: " + responseCode);
             httpConn.disconnect();
 
             return false;
         }
-        httpConn.disconnect();
 
         return true;
     }

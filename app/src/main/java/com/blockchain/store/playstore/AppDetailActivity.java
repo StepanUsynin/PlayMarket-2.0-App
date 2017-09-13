@@ -122,42 +122,41 @@ public class AppDetailActivity extends AppCompatActivity {
                             }
                         });
                         return;
-                    }
+                    } else {
 
-                    String gasPrice = APIUtils.api.getGasPrice();
-                    int nonce = APIUtils.api.getNonce(keyManager.getAccounts().get(0).getAddress().getHex());
+                        String gasPrice = APIUtils.api.getGasPrice();
+                        int nonce = APIUtils.api.getNonce(keyManager.getAccounts().get(0).getAddress().getHex());
 
-                    BigInt value = new BigInt(0);
-                    value.setInt64(price.inWei().longValue());
+                        BigInt value = new BigInt(0);
+                        value.setInt64(price.inWei().longValue());
 
-                    Transaction tx = new Transaction(
-                            nonce, new Address(CryptoUtils.CONTRACT_ADDRESS),
-                            value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(idApp2, String.valueOf(idCat)));
+                        Transaction tx = new Transaction(
+                                nonce, new Address(CryptoUtils.CONTRACT_ADDRESS),
+                                value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(idApp2, String.valueOf(idCat)));
 
-                    try {
-                        Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
+                        try {
+                            Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
 
-                        Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
+                            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
 
-                        installApkAfterPurchase(CryptoUtils.getRawTransaction(transaction));
+                            installApkAfterPurchase(CryptoUtils.getRawTransaction(transaction));
 
-                        if (result == true) {
-                            new Handler(Looper.getMainLooper()).post(new Runnable () {
-                                @Override
-                                public void run()
-                                {
-                                    displayDownloadingAlert();
-                                }
-                            });
-                        } else {
+                            if (result == true) {
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        displayDownloadingAlert();
+                                    }
+                                });
+                            } else {
 
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

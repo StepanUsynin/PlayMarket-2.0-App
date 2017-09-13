@@ -255,7 +255,7 @@
                 <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="10dp"
-                    android:layout_height="50dp"
+                    android:layout_height="75dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/userprofile1" />
 
@@ -277,7 +277,7 @@
                 <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="10dp"
-                    android:layout_height="50dp"
+                    android:layout_height="75dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/userprofile1" />
 
@@ -299,7 +299,7 @@
                 <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="10dp"
-                    android:layout_height="50dp"
+                    android:layout_height="75dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/userprofile1" />
 
@@ -320,7 +320,7 @@
                 <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="10dp"
-                    android:layout_height="50dp"
+                    android:layout_height="75dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/userprofile1" />
 
