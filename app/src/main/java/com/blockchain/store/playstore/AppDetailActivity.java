@@ -94,6 +94,9 @@ public class AppDetailActivity extends AppCompatActivity {
     }
 
     public void buyApp(View view) {
+
+        displayProccessingAlert();
+
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {

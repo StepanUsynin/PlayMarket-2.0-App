@@ -10,8 +10,7 @@ import android.util.Log;
 public class BuildUtils {
 
     public static boolean shouldUseContentUri() {
-
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
     public static boolean isXaomi() {
@@ -20,6 +19,14 @@ public class BuildUtils {
 
     public static boolean isFalseReleaseVersion() {
         return Build.VERSION.RELEASE.contains("7.0") || Build.VERSION.RELEASE.contains("6.0");
+    }
+
+    public static boolean isAPI(int level) {
+        return Build.VERSION.SDK_INT == level;
+    }
+
+    public static boolean isRedMi4() {
+        return Build.MODEL.contains("Redmi 4");
     }
 
     public static void printPhoneInfo() {

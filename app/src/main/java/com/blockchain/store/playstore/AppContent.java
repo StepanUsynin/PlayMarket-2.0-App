@@ -36,7 +36,7 @@ public class AppContent implements Serializable{
     public boolean IS_LOADING = false;
     public boolean NO_MORE_CONTENT = false;
     public String categoryId = "";
-    public int FETCH_COUNT = 1;
+    public int FETCH_COUNT = 5;
 
     public AppContent(final String category) {
 
@@ -106,7 +106,7 @@ public class AppContent implements Serializable{
     private AppItem createAppItem(JSONObject app, int position) throws JSONException {
         String price = app.getString("value");
         String idApp = app.getString("nameApp");
-        boolean free = (app.getInt("free") != 0);
+        boolean free = app.getBoolean("free");
 
         String icon = null;
         try {

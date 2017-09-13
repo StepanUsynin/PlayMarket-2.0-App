@@ -28,7 +28,7 @@ public class CryptoUtils {
     public static KeyManager keyManager;
     public static EthDroid ethdroid;
 
-    public static final String CONTRACT_ADDRESS = "0x77bC6e6B70029C9478265B15C8cF1e4E2fB7B133";
+    public static final String CONTRACT_ADDRESS = "0xf18418d6dc1a2278c69968b8b8a2d84b553fba51";
     public static final String TEST_ADDRESS = "0x5e5c1c8e03472666e0b9e218153869dcbc9c1e65";
 
     public static KeyManager setupKeyManager(String dataDir) {
@@ -74,6 +74,7 @@ public class CryptoUtils {
 
         String appIdEnc = String.format("%64s", appId).replace(' ', '0');
         String catIdEnc = String.format("%64s", idCat).replace(' ', '0');
+
         Log.d("Ether", appIdEnc);
         Log.d("Ether", catIdEnc);
 
@@ -107,7 +108,7 @@ public class CryptoUtils {
         value.setInt64((long) 1100000000000000.0);
 
         Transaction tx = new Transaction(
-                3, new Address("0x5E5c1C8e03472666E0B9e218153869dCBc9c1e65"),
+                3, new Address(TEST_ADDRESS),
                 value, new BigInt(200000), new BigInt((long) 30000000000.0), null);
         try {
             Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
@@ -118,3 +119,4 @@ public class CryptoUtils {
         }
     }
 }
+

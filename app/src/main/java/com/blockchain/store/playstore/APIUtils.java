@@ -37,8 +37,11 @@ public class APIUtils {
     public static final String GET_GAS_PRICE_URL = "/v1/getGasPrice";
     public static final String SEND_TX_URL = "/v1/sendRawTransaction";
     public static final String GET_APP_URL = "/v1/getApp";
-
     public static final String GET_APK_URL = "/v1/loadApp";
+
+    public static final String CATEGORY_ID_PARAM = "idCTG";
+    public static final String COUNT_PARAM = "Count";
+    public static final String ADDRESS_PARAM = "address";
 
     public static String nodeUrl = "https://n";
 
@@ -55,7 +58,7 @@ public class APIUtils {
         HttpPost request = new HttpPost(nodeUrl + GET_BALANCE_URL);
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-        nameValuePair.add(new BasicNameValuePair("address", address));
+        nameValuePair.add(new BasicNameValuePair(ADDRESS_PARAM, address));
 
         //Encoding POST data
         try {
@@ -268,9 +271,9 @@ public class APIUtils {
         HttpPost request = new HttpPost(nodeUrl + GET_APP_URL);
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
-        nameValuePair.add(new BasicNameValuePair("idCTG", category));
+        nameValuePair.add(new BasicNameValuePair(CATEGORY_ID_PARAM, category));
         nameValuePair.add(new BasicNameValuePair("startIdApp", String.valueOf(startId)));
-        nameValuePair.add(new BasicNameValuePair("startIdCount", String.valueOf(count)));
+        nameValuePair.add(new BasicNameValuePair(COUNT_PARAM, String.valueOf(count)));
 
         //Encoding POST data
         try {
