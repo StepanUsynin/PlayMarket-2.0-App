@@ -103,7 +103,7 @@ public class AppDetailActivity extends AppCompatActivity {
                 try {
                     boolean result = installApk();
 
-                    if (result) {
+                    if (result == true) {
                         new Handler(Looper.getMainLooper()).post(new Runnable () {
                             @Override
                             public void run()
@@ -112,7 +112,6 @@ public class AppDetailActivity extends AppCompatActivity {
                             }
                         });
 
-                        return;
                     } else if (APIUtils.api.getBalance(keyManager.getAccounts().get(0).getAddress().getHex()).equals("0")) {
                         new Handler(Looper.getMainLooper()).post(new Runnable () {
                             @Override
@@ -121,7 +120,6 @@ public class AppDetailActivity extends AppCompatActivity {
                                 displayNotEnoughMoneyAlert();
                             }
                         });
-                        return;
                     } else {
 
                         String gasPrice = APIUtils.api.getGasPrice();
