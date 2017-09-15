@@ -33,6 +33,7 @@ public class APIUtils {
     public static APIUtils api;
 
     public static final String PLAYMARKET_BASE_URL = ".playmarket.io";
+    public static final String GET_ADDRESS_CONTRACT_URL = "/v1/getAddressContract";
     public static final String GET_BALANCE_URL = "/v1/getBalance";
     public static final String GET_NONCE_URL = "/v1/getTransactionCount";
     public static final String GET_GAS_PRICE_URL = "/v1/getGasPrice";
@@ -41,6 +42,8 @@ public class APIUtils {
     public static final String GET_APK_URL = "/v1/loadApp";
 
     public static final String CATEGORY_ID_PARAM = "idCTG";
+    public static final String GET_APP_PARAM = "getApp";
+    public static final String START_ID_PARAM = "startIdApp";
     public static final String COUNT_PARAM = "Count";
     public static final String ADDRESS_PARAM = "address";
     public static final String BALANCE_PARAM = "balance";
@@ -56,6 +59,27 @@ public class APIUtils {
         this.nodeUrl = nodeUrl + node + PLAYMARKET_BASE_URL;
 
         api = this;
+    }
+
+    public String getContractAddress() throws IOException {
+        HttpClient client = createHttpClient();
+        HttpPost request = new HttpPost(nodeUrl + GET_ADDRESS_CONTRACT_URL);
+
+        HttpResponse response;
+        response = client.execute(request);
+        String responseBody = EntityUtils.toString(response.getEntity());
+        Log.d("NET", responseBody);
+
+        String address = "";
+        try {
+            address = new JSONObject(responseBody).getString(ADDRESS_PARAM);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("NET",  "Get Contract Address: " + address);
+
+        return address;
     }
 
     public String getBalance(String address) throws IOException {
@@ -232,7 +256,7 @@ public class APIUtils {
 
         JSONArray apps = new JSONArray();
         try {
-            apps = new JSONObject(responseBody).getJSONArray("getApp");
+            apps = new JSONObject(responseBody).getJSONArray(GET_APP_PARAM);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -245,7 +269,7 @@ public class APIUtils {
         HttpPost request = new HttpPost(nodeUrl + GET_APP_URL);
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-        nameValuePair.add(new BasicNameValuePair("idCTG", category));
+        nameValuePair.add(new BasicNameValuePair(CATEGORY_ID_PARAM, category));
 
         //Encoding POST data
         try {
@@ -263,7 +287,7 @@ public class APIUtils {
 
         JSONArray apps = new JSONArray();
         try {
-            apps = new JSONObject(responseBody).getJSONArray("getApp");
+            apps = new JSONObject(responseBody).getJSONArray(GET_APP_PARAM);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -277,7 +301,7 @@ public class APIUtils {
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
         nameValuePair.add(new BasicNameValuePair(CATEGORY_ID_PARAM, category));
-        nameValuePair.add(new BasicNameValuePair("startIdApp", String.valueOf(startId)));
+        nameValuePair.add(new BasicNameValuePair(START_ID_PARAM, String.valueOf(startId)));
         nameValuePair.add(new BasicNameValuePair(COUNT_PARAM, String.valueOf(count)));
 
         //Encoding POST data
@@ -296,7 +320,7 @@ public class APIUtils {
 
         JSONArray apps = new JSONArray();
         try {
-            apps = new JSONObject(responseBody).getJSONArray("getApp");
+            apps = new JSONObject(responseBody).getJSONArray(GET_APP_PARAM);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -108,6 +108,7 @@ public class IntroLogoActivity extends AppCompatActivity {
 
                     initApiUtils(nearestNodeIP);
 
+                    setContractAddress();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -119,6 +120,10 @@ public class IntroLogoActivity extends AppCompatActivity {
 
     protected void initApiUtils(String node) {
         new APIUtils(node);
+    }
+
+    protected void setContractAddress() throws IOException {
+        CryptoUtils.CONTRACT_ADDRESS = APIUtils.api.getContractAddress();
     }
 }
 

@@ -28,7 +28,7 @@ public class CryptoUtils {
     public static KeyManager keyManager;
     public static EthDroid ethdroid;
 
-    public static final String CONTRACT_ADDRESS = "0xf18418d6dc1a2278c69968b8b8a2d84b553fba51";
+    public static String CONTRACT_ADDRESS = "0xf18418d6dc1a2278c69968b8b8a2d84b553fba51";
     public static final String TEST_ADDRESS = "0x5e5c1c8e03472666e0b9e218153869dcbc9c1e65";
 
     public static KeyManager setupKeyManager(String dataDir) {
