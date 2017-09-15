@@ -32,6 +32,7 @@ public class APIUtils {
 
     public static APIUtils api;
 
+    public static final String PLAYMARKET_BASE_URL = ".playmarket.io";
     public static final String GET_BALANCE_URL = "/v1/getBalance";
     public static final String GET_NONCE_URL = "/v1/getTransactionCount";
     public static final String GET_GAS_PRICE_URL = "/v1/getGasPrice";
@@ -42,13 +43,17 @@ public class APIUtils {
     public static final String CATEGORY_ID_PARAM = "idCTG";
     public static final String COUNT_PARAM = "Count";
     public static final String ADDRESS_PARAM = "address";
+    public static final String BALANCE_PARAM = "balance";
+    public static final String GET_TRANSACTION_COUNT_PARAM = "getTransactionCount";
+    public static final String SERIALIZED_TRANSACTION_PARAM = "serializedTx";
+    public static final String GAS_PRICE_PARAM = "gasPrice";
 
     public static String nodeUrl = "https://n";
 
     private static final int BUFFER_SIZE = 4096;
 
     public APIUtils(String node) {
-        this.nodeUrl = nodeUrl + node + ".playmarket.io";
+        this.nodeUrl = nodeUrl + node + PLAYMARKET_BASE_URL;
 
         api = this;
     }
@@ -76,7 +81,7 @@ public class APIUtils {
 
         String balance = "";
         try {
-            balance = new JSONObject(responseBody).getString("balance");
+            balance = new JSONObject(responseBody).getString(BALANCE_PARAM);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,7 +102,7 @@ public class APIUtils {
 
         String gasPrice = "0";
         try {
-            gasPrice = new JSONObject(responseBody).getString("gasPrice");
+            gasPrice = new JSONObject(responseBody).getString(GAS_PRICE_PARAM);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -110,7 +115,7 @@ public class APIUtils {
         HttpPost request = new HttpPost(nodeUrl + GET_NONCE_URL);
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-        nameValuePair.add(new BasicNameValuePair("address", address));
+        nameValuePair.add(new BasicNameValuePair(ADDRESS_PARAM, address));
 
         //Encoding POST data
         try {
@@ -128,7 +133,7 @@ public class APIUtils {
 
         int nonce = 0;
         try {
-            nonce = new JSONObject(responseBody).getInt("getTransactionCount");
+            nonce = new JSONObject(responseBody).getInt(GET_TRANSACTION_COUNT_PARAM);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -143,7 +148,7 @@ public class APIUtils {
         HttpPost request = new HttpPost(nodeUrl + SEND_TX_URL);
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-        nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
+        nameValuePair.add(new BasicNameValuePair(SERIALIZED_TRANSACTION_PARAM, "0x" + rawTransaction));
 
         //Encoding POST data
         try {
@@ -176,7 +181,7 @@ public class APIUtils {
         HttpPost request = new HttpPost(nodeUrl + SEND_TX_URL);
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-        nameValuePair.add(new BasicNameValuePair("serializedTx", "0x" + rawTransaction));
+        nameValuePair.add(new BasicNameValuePair(SERIALIZED_TRANSACTION_PARAM, "0x" + rawTransaction));
 
         //Encoding POST data
         try {
@@ -309,7 +314,7 @@ public class APIUtils {
         return nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat;
     }
 
-    private HttpClient createHttpClient() {
+    public static HttpClient createHttpClient() {
         return new DefaultHttpClient();
     }
 
