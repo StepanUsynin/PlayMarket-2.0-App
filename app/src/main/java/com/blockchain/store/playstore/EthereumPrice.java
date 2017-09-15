@@ -16,8 +16,11 @@ public class EthereumPrice {
     public static String GWEI = "Gwei";
     public static String WEI = "Wei";
 
+    private DecimalFormat df;
+
     public EthereumPrice (String price) {
         wei = new BigDecimal(price);
+        df = makeDecimalFormat();
     }
 
     public String getUnits() {
@@ -46,12 +49,6 @@ public class EthereumPrice {
     }
 
     public String getDisplayPrice() {
-
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        df.setMinimumFractionDigits(0);
-        df.setGroupingUsed(false);
-
         String priceUnit = getUnits();
         if  (priceUnit.equals(ETH)) {
             return df.format(inEther()) + " " + ETH;
@@ -60,5 +57,14 @@ public class EthereumPrice {
         } else {
             return df.format(inWei()) + " " + WEI;
         }
+    }
+
+    private DecimalFormat makeDecimalFormat() {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(0);
+        df.setGroupingUsed(false);
+
+        return df;
     }
 }
