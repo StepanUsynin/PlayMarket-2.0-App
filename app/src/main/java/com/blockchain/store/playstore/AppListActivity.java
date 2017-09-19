@@ -91,6 +91,8 @@ public class AppListActivity extends AppCompatActivity {
                 try {
                     final String balance = String.valueOf(APIUtils.api.getBalance(keyManager.getAccounts().get(0).getAddress().getHex()));
 
+                    APIUtils.api.balance = new EthereumPrice(balance);
+
                     final String ether = balance.substring(0, balance.length() - 18);
                     new Handler(Looper.getMainLooper()).post(new Runnable () {
                         @Override

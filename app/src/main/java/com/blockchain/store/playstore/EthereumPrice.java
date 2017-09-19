@@ -59,6 +59,10 @@ public class EthereumPrice {
         }
     }
 
+    public boolean isZero() {
+        return wei.equals(BigDecimal.ZERO);
+    }
+
     private DecimalFormat makeDecimalFormat() {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);

@@ -1,5 +1,6 @@
 package com.blockchain.store.playstore;
 
+import android.app.Dialog;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -95,6 +96,42 @@ public class AppDetailActivity extends AppCompatActivity {
 
     public void buyApp(View view) {
 
+        if (APIUtils.api.balance.isZero() && !free) {
+            displayNotEnoughMoneyAlert();
+            return;
+        }
+
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.custom_dialog);
+
+        TextView priceText = (TextView) d.findViewById(R.id.priceText);
+        if (free) {
+            priceText.setText("Free");
+        } else {
+            priceText.setText(buyButton.getText());
+        }
+
+        TextView appTitleText = (TextView) d.findViewById(R.id.appTitleText);
+        appTitleText.setText(appTitleHeader.getText());
+
+        TextView balanceText = (TextView) d.findViewById(R.id.balanceText);
+        balanceText.setText(APIUtils.api.balance.getDisplayPrice());
+
+        ImageView appIconView = (ImageView) d.findViewById(R.id.appIcon);
+        appIconView.setImageDrawable(iconView.getDrawable());
+
+        d.show();
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                purchase();
+                d.dismiss();
+            }
+        });
+    }
+
+    public void purchase() {
         displayProccessingAlert();
 
         Thread thread = new Thread(new Runnable(){
@@ -109,15 +146,6 @@ public class AppDetailActivity extends AppCompatActivity {
                             public void run()
                             {
                                 displayDownloadingAlert();
-                            }
-                        });
-
-                    } else if (APIUtils.api.getBalance(keyManager.getAccounts().get(0).getAddress().getHex()).equals("0")) {
-                        new Handler(Looper.getMainLooper()).post(new Runnable () {
-                            @Override
-                            public void run()
-                            {
-                                displayNotEnoughMoneyAlert();
                             }
                         });
                     } else {

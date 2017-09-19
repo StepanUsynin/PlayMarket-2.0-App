@@ -55,6 +55,8 @@ public class APIUtils {
 
     private static final int BUFFER_SIZE = 4096;
 
+    public EthereumPrice balance;
+
     public APIUtils(String node) {
         this.nodeUrl = nodeUrl + node + PLAYMARKET_BASE_URL;
 
