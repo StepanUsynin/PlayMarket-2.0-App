@@ -61,7 +61,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_weight="0.37"
+                android:background="@drawable/categorybar" />
 
             <ProgressBar
                 android:id="@+id/loadingSpinner"

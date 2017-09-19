@@ -27,7 +27,7 @@
     <Button
         android:id="@+id/investBtn"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:background="@color/investButtonColor"
         android:elevation="0dp"
@@ -37,12 +37,14 @@
         app:layout_constraintBottom_toBottomOf="@+id/actionBtnBackground"
         app:layout_constraintEnd_toStartOf="@+id/buyBtn"
         app:layout_constraintStart_toStartOf="@+id/actionBtnBackground"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintTop_toTopOf="@+id/actionBtnBackground"
+        android:layout_marginTop="8dp"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/buyBtn"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:background="@color/buyButtonColor"
         android:onClick="buyApp"
@@ -51,7 +53,10 @@
         app:layout_constraintBottom_toBottomOf="@+id/actionBtnBackground"
         app:layout_constraintEnd_toEndOf="@+id/actionBtnBackground"
         app:layout_constraintStart_toEndOf="@+id/investBtn"
-        tools:layout_editor_absoluteX="214dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="@+id/actionBtnBackground"
+        app:layout_constraintLeft_toRightOf="@+id/investBtn"
+        android:layout_marginLeft="8dp" />
 
     <ImageView
         android:id="@+id/iconView"
