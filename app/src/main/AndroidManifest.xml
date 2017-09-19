@@ -28,26 +28,31 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <activity android:name=".IntroLogoActivity">
+        <activity android:name=".IntroLogoActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginPromptActivity" />
-        <activity android:name=".NewUserWelcomeActivity" />
+        <activity android:name=".LoginPromptActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NewUserWelcomeActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AppListActivity"
             android:label="@string/title_app_list"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".AppDetailActivity"
             android:label="@string/title_app_detail"
             android:parentActivityName=".AppListActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.blockchain.store.playstore.AppListActivity" />

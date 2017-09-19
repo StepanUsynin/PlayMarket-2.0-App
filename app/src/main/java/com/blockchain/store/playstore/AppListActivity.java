@@ -118,7 +118,7 @@ public class AppListActivity extends AppCompatActivity {
     }
 
     private InfiniteScrollListener createInfiniteScrollListener(final AppContent AppContent, final RecyclerView recyclerView) {
-        return new InfiniteScrollListener(1, layoutManager) {
+        return new InfiniteScrollListener(AppContent.FETCH_COUNT, layoutManager) {
             @Override public void onScrolledToEnd(final int firstVisibleItemPosition) {
                 // load your items here
                 // logic of loading items will be different depending on your specific use case
@@ -137,7 +137,7 @@ public class AppListActivity extends AppCompatActivity {
                             public void run() {
                                 // when new items are loaded, combine old and new items, pass them to your adapter
                                 // and call refreshView(...) method from InfiniteScrollListener class to refresh RecyclerView
-                                refreshView(recyclerView, new SimpleItemRecyclerViewAdapter(AppContent.ITEMS), firstVisibleItemPosition);
+                                refreshView(recyclerView, new SimpleItemRecyclerViewAdapter(AppContent.ITEMS), firstVisibleItemPosition - AppContent.FETCH_COUNT );
                             }
                         });
                     }

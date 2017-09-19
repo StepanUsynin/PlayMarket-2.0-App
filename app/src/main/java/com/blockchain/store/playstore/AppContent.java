@@ -36,7 +36,7 @@ public class AppContent implements Serializable{
     public boolean IS_LOADING = false;
     public boolean NO_MORE_CONTENT = false;
     public String categoryId = "";
-    public int FETCH_COUNT = 5;
+    public int FETCH_COUNT = 4;
 
     public AppContent(final String category) {
 

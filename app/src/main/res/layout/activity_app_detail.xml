@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/actionBtnBackground"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginBottom="70dp"
         android:layout_marginTop="8dp"
@@ -27,10 +27,8 @@
     <Button
         android:id="@+id/investBtn"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
         android:background="@color/investButtonColor"
         android:elevation="0dp"
         android:onClick="investApp"
@@ -38,15 +36,14 @@
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="@+id/actionBtnBackground"
         app:layout_constraintEnd_toStartOf="@+id/buyBtn"
-        app:layout_constraintStart_toStartOf="@+id/actionBtnBackground" />
+        app:layout_constraintStart_toStartOf="@+id/actionBtnBackground"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/buyBtn"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
         android:background="@color/buyButtonColor"
         android:onClick="buyApp"
         android:text="Buy"
@@ -54,7 +51,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/actionBtnBackground"
         app:layout_constraintEnd_toEndOf="@+id/actionBtnBackground"
         app:layout_constraintStart_toEndOf="@+id/investBtn"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_editor_absoluteX="214dp" />
 
     <ImageView
         android:id="@+id/iconView"
@@ -71,7 +68,6 @@
         android:id="@+id/AppPrice"
         android:layout_width="0dp"
         android:layout_height="29dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:onClick="buyApp"
         android:text="Price: 0.0"
@@ -81,14 +77,13 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/developerName"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_editor_absoluteX="318dp" />
 
     <TextView
         android:id="@+id/AppNameBody"
         android:layout_width="wrap_content"
         android:layout_height="39dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:onClick="buyApp"
         android:text="App Name"
@@ -96,8 +91,8 @@
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/iconView"
         app:layout_constraintTop_toBottomOf="@+id/headerBackground"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_editor_absoluteX="140dp" />
 
     <ImageView
         android:id="@+id/headerBackground"
@@ -109,8 +104,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/header2"
-        tools:layout_editor_absoluteY="-10dp" />
+        app:srcCompat="@drawable/header2" />
 
     <ImageButton
         android:id="@+id/backButton"
@@ -124,7 +118,8 @@
         android:onClick="goBackToList"
         app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp" />
 
     <TextView
         android:id="@+id/AppNameTitle"
@@ -158,15 +153,14 @@
         android:id="@+id/starsRatingImg"
         android:layout_width="0dp"
         android:layout_height="27dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginLeft="16dp"
         app:layout_constraintEnd_toStartOf="@+id/ratingNumberView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="@+id/iconView"
         app:layout_constraintTop_toBottomOf="@+id/iconView"
-        app:layout_constraintTop_toTopOf="@+id/ratingNumberView"
-        app:srcCompat="@drawable/stars" />
+        app:srcCompat="@drawable/stars"
+        android:layout_marginStart="16dp" />
 
     <TextView
         android:id="@+id/ratingNumberView"
@@ -188,19 +182,19 @@
         android:text="Developer"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="@+id/iconView"
-        app:layout_constraintStart_toStartOf="@+id/AppNameBody" />
+        app:layout_constraintStart_toStartOf="@+id/AppNameBody"
+        tools:layout_editor_absoluteX="140dp" />
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actionBtnBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
