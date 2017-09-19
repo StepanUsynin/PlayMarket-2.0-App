@@ -1,6 +1,9 @@
 package com.blockchain.store.playstore;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -102,7 +105,7 @@ public class AppDetailActivity extends AppCompatActivity {
         }
 
         final Dialog d = new Dialog(this);
-        d.setContentView(R.layout.custom_dialog);
+        d.setContentView(R.layout.purchase_confirm_dialog);
 
         TextView priceText = (TextView) d.findViewById(R.id.priceText);
         if (free) {
@@ -122,6 +125,14 @@ public class AppDetailActivity extends AppCompatActivity {
 
         d.show();
 
+        TextView addFundsBtn = (TextView) d.findViewById(R.id.addMoneyButton);
+        addFundsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showAddFundsDialog();
+            }
+        });
+
+
         Button close_btn = (Button) d.findViewById(R.id.close_button);
         close_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -129,6 +140,44 @@ public class AppDetailActivity extends AppCompatActivity {
                 d.dismiss();
             }
         });
+    }
+
+    public void showAddFundsDialog() {
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.show_address_dialog);
+
+        final TextView addressTextView = (TextView) d.findViewById(R.id.addressTextView);
+        try {
+            addressTextView.setText(keyManager.getAccounts().get(0).getAddress().getHex());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+
+        Button copyAddressButton = (Button) d.findViewById(R.id.copyAddressButton);
+        copyAddressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("address", addressTextView.getText());
+                clipboard.setPrimaryClip(clip);
+
+                showCopiedAlert();
+            }
+        });
+
+        d.show();
+    }
+
+    private void showCopiedAlert() {
+        Toast.makeText(getApplicationContext(), "Address Copied!",
+                Toast.LENGTH_LONG).show();
     }
 
     public void purchase() {
