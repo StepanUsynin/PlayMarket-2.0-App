@@ -101,6 +101,7 @@ public class AppDetailActivity extends AppCompatActivity {
 
         if (APIUtils.api.balance.isZero() && !free) {
             displayNotEnoughMoneyAlert();
+            showAddFundsDialog();
             return;
         }
 
@@ -153,6 +154,9 @@ public class AppDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        TextView balanceTextView = (TextView) d.findViewById(R.id.balanceText);
+        balanceTextView.setText(APIUtils.api.balance.getDisplayPrice());
+
         Button close_btn = (Button) d.findViewById(R.id.close_button);
         close_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -187,18 +191,6 @@ public class AppDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    boolean result = installApk();
-
-                    if (result == true) {
-                        new Handler(Looper.getMainLooper()).post(new Runnable () {
-                            @Override
-                            public void run()
-                            {
-                                displayDownloadingAlert();
-                            }
-                        });
-                    } else {
-
                         String gasPrice = APIUtils.api.getGasPrice();
                         int nonce = APIUtils.api.getNonce(keyManager.getAccounts().get(0).getAddress().getHex());
 
@@ -214,24 +206,19 @@ public class AppDetailActivity extends AppCompatActivity {
 
                             Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
 
-                            installApkAfterPurchase(CryptoUtils.getRawTransaction(transaction));
+                            installApk(CryptoUtils.getRawTransaction(transaction));
 
-                            if (result == true) {
-                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        displayDownloadingAlert();
-                                    }
-                                });
-                            } else {
-
-                            }
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                    displayDownloadingAlert();
+                                 }
+                            });
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -240,34 +227,21 @@ public class AppDetailActivity extends AppCompatActivity {
 
         thread.start();
 
+        APIUtils.api.updateBalance(keyManager);
+
     }
 
-    public boolean installApk() {
+    public boolean installApk(String tx) {
         PermissionUtils.verifyStoragePermissions(this);
 
         ApkInstaller apkInstaller = new ApkInstaller();
         apkInstaller.setContext(getApplicationContext());
-
         try {
-            apkInstaller.execute(APIUtils.getApkLink(keyManager.getAccounts().get(0).getAddress().getHex(), idApp2, String.valueOf(idCat)));
+            apkInstaller.execute(APIUtils.getApkLink(keyManager.getAccounts().get(0).getAddress().getHex(), idApp2, String.valueOf(idCat)),
+                    APIUtils.getSendTxLink("0x" + tx, idApp2, String.valueOf(idCat)));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        while (apkInstaller.isDownloading) {}
-
-        return apkInstaller.successful;
-    }
-
-    public boolean installApkAfterPurchase(String tx) {
-        PermissionUtils.verifyStoragePermissions(this);
-
-        ApkInstaller apkInstaller = new ApkInstaller();
-        apkInstaller.setContext(getApplicationContext());
-        apkInstaller.execute(APIUtils.getSendTxLink("0x" + tx, idApp2, String.valueOf(idCat)));
-
-        while (apkInstaller.isDownloading) {}
-
         return apkInstaller.successful;
     }
 

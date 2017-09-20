@@ -24,6 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.ethmobile.ethdroid.KeyManager;
+
 /**
  * Created by samsheff on 05/09/2017.
  */
@@ -79,7 +81,7 @@ public class APIUtils {
             e.printStackTrace();
         }
 
-        Log.d("NET",  "Get Contract Address: " + address);
+        Log.d("NET", "Get Contract Address: " + address);
 
         return address;
     }
@@ -95,8 +97,7 @@ public class APIUtils {
         try {
             request.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -112,7 +113,7 @@ public class APIUtils {
             e.printStackTrace();
         }
 
-        Log.d("NET",  "Get Balance: " + balance);
+        Log.d("NET", "Get Balance: " + balance);
 
         return balance;
     }
@@ -124,7 +125,7 @@ public class APIUtils {
         HttpResponse response;
         response = client.execute(request);
         String responseBody = EntityUtils.toString(response.getEntity());
-        Log.d("NET",  "Get Gas Price: " + responseBody);
+        Log.d("NET", "Get Gas Price: " + responseBody);
 
         String gasPrice = "0";
         try {
@@ -147,8 +148,7 @@ public class APIUtils {
         try {
             request.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -164,7 +164,7 @@ public class APIUtils {
             e.printStackTrace();
         }
 
-        Log.d("NET",  "Get Nonce: " + nonce);
+        Log.d("NET", "Get Nonce: " + nonce);
 
         return nonce;
     }
@@ -180,8 +180,7 @@ public class APIUtils {
         try {
             request.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -197,7 +196,7 @@ public class APIUtils {
             e.printStackTrace();
         }
 
-        Log.d("NET",  "Send TX: " + status);
+        Log.d("NET", "Send TX: " + status);
 
         return true;
     }
@@ -213,8 +212,7 @@ public class APIUtils {
         try {
             request.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -225,7 +223,7 @@ public class APIUtils {
         File file = new File(saveFilePath);
         file.mkdirs();
         File outputFile = new File(file, "app.apk");
-        if(outputFile.exists()){
+        if (outputFile.exists()) {
             outputFile.delete();
         }
 
@@ -254,7 +252,7 @@ public class APIUtils {
         HttpResponse response;
         response = client.execute(request);
         String responseBody = EntityUtils.toString(response.getEntity());
-        Log.d("NET",  "Get App: " + responseBody);
+        Log.d("NET", "Get App: " + responseBody);
 
         JSONArray apps = new JSONArray();
         try {
@@ -277,15 +275,14 @@ public class APIUtils {
         try {
             request.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         HttpResponse response;
         response = client.execute(request);
         String responseBody = EntityUtils.toString(response.getEntity());
-        Log.d("NET",  "Get App: " + responseBody);
+        Log.d("NET", "Get App: " + responseBody);
 
         JSONArray apps = new JSONArray();
         try {
@@ -310,15 +307,14 @@ public class APIUtils {
         try {
             request.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         HttpResponse response;
         response = client.execute(request);
         String responseBody = EntityUtils.toString(response.getEntity());
-        Log.d("NET",  "Get App: " + responseBody);
+        Log.d("NET", "Get App: " + responseBody);
 
         JSONArray apps = new JSONArray();
         try {
@@ -330,6 +326,20 @@ public class APIUtils {
         return apps;
     }
 
+    public void updateBalance(final KeyManager keyManager) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final String balanceString = String.valueOf(APIUtils.api.getBalance(keyManager.getAccounts().get(0).getAddress().getHex()));
+
+                    balance = new EthereumPrice(balanceString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     public static String getApkLink(String address, String idApp, String idCat) {
         Log.d("NET", nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat);
         return nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat;

@@ -62,9 +62,7 @@ public class ApkInstaller extends AsyncTask<String,Void,Void> {
             HttpDownloadUtility downloader = new HttpDownloadUtility();
             try {
                 if (!downloader.downloadFile(arg0[0], outputFile)) {
-                    successful = false;
-                    isDownloading = false;
-                    return null;
+                    downloader.downloadFile(arg0[1], outputFile);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();

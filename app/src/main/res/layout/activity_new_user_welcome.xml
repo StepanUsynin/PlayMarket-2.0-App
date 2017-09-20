@@ -47,8 +47,8 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1"
-        tools:layout_editor_absoluteY="24dp"
-        tools:layout_editor_absoluteX="118dp" />
+        app:layout_constraintLeft_toRightOf="@+id/LogoImageView"
+        android:layout_marginLeft="8dp" />
 
     <ImageView
         android:id="@+id/LogoImageView"
@@ -63,7 +63,7 @@
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="57dp"
+        android:layout_marginLeft="42dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -111,7 +111,7 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.296" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView4"
