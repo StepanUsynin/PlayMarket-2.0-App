@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.blockchain.store.playstore.R;
 import com.blockchain.store.playstore.crypto.CryptoUtils;
+import com.blockchain.store.playstore.utilities.data.ClipboardUtils;
 
 import io.ethmobile.ethdroid.KeyManager;
 
@@ -47,10 +48,7 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
     private View.OnClickListener copyAddressToClipboard = new View.OnClickListener() {
         public void onClick(View v) {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("address", etherAddress);
-            clipboard.setPrimaryClip(clip);
-
+            ClipboardUtils.copyToClipboard(getApplicationContext(), etherAddress);
             showCopiedAlert();
         }
     };

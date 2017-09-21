@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.blockchain.store.playstore.data.content.AppContent;
 import com.blockchain.store.playstore.R;
 import com.blockchain.store.playstore.data.types.EthereumPrice;
+import com.blockchain.store.playstore.utilities.data.ClipboardUtils;
 import com.blockchain.store.playstore.utilities.installer.ApkInstaller;
 import com.blockchain.store.playstore.utilities.net.APIUtils;
 import com.blockchain.store.playstore.crypto.CryptoUtils;
@@ -176,10 +177,7 @@ public class AppDetailActivity extends AppCompatActivity {
         copyAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("address", addressTextView.getText());
-                clipboard.setPrimaryClip(clip);
-
+                ClipboardUtils.copyToClipboard(getApplicationContext(), addressTextView.getText().toString());
                 showCopiedAlert();
             }
         });
