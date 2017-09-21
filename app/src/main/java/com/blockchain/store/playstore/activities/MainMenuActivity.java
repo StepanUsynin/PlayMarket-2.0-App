@@ -1,11 +1,13 @@
 package com.blockchain.store.playstore.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenuItemView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import com.blockchain.store.playstore.R;
 import com.blockchain.store.playstore.crypto.CryptoUtils;
 import com.blockchain.store.playstore.data.content.AppContent;
 import com.blockchain.store.playstore.data.types.EthereumPrice;
+import com.blockchain.store.playstore.utilities.data.ClipboardUtils;
 import com.blockchain.store.playstore.utilities.data.ImageUtils;
 import com.blockchain.store.playstore.utilities.drawable.HamburgerDrawable;
 import com.blockchain.store.playstore.utilities.net.APIUtils;
@@ -54,6 +58,7 @@ public class MainMenuActivity extends AppCompatActivity
     private RecyclerView recyclerView2;
     private LinearLayoutManager layoutManager;
     private ProgressBar loadingSpinner;
+    public MenuItem balanceMenuItem;
     private KeyManager keyManager;
 
     @Override
@@ -73,6 +78,8 @@ public class MainMenuActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        balanceMenuItem = navigationView.getMenu().getItem(0);
+
         setupKeyManager();
         displayBalanceAlert();
         setupRecyclersAndFetchContent();
@@ -83,8 +90,6 @@ public class MainMenuActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -116,23 +121,61 @@ public class MainMenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_balance) {
+            showAddFundsDialog();
+        } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_account) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_add_funds) {
+            showAddFundsDialog();
+        } else if (id == R.id.nav_ico) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_settings) {
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void showAddFundsDialog() {
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.show_address_dialog);
+
+        final TextView addressTextView = (TextView) d.findViewById(R.id.addressTextView);
+        try {
+            addressTextView.setText(keyManager.getAccounts().get(0).getAddress().getHex());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        TextView balanceTextView = (TextView) d.findViewById(R.id.balanceText);
+        balanceTextView.setText(APIUtils.api.balance.getDisplayPrice());
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+
+        Button copyAddressButton = (Button) d.findViewById(R.id.copyAddressButton);
+        copyAddressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardUtils.copyToClipboard(getApplicationContext(), addressTextView.getText().toString());
+                showCopiedAlert();
+            }
+        });
+
+        d.show();
+    }
+
+    private void showCopiedAlert() {
+        Toast.makeText(getApplicationContext(), "Address Copied!",
+                Toast.LENGTH_LONG).show();
     }
 
     protected void setupKeyManager() {
@@ -159,9 +202,11 @@ public class MainMenuActivity extends AppCompatActivity
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Balance: " + ether + "." + balance.substring(ether.length(), balance.length() - 16),
                                     Toast.LENGTH_LONG).show();
+
+                            balanceMenuItem.setTitle(APIUtils.api.balance.getDisplayPrice());
+
                         }
                     });
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
