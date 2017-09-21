@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.utilities.device;
 
 import android.Manifest;
 import android.app.Activity;

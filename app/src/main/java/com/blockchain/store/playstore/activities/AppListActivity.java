@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blockchain.store.playstore.data.content.AppContent;
+import com.blockchain.store.playstore.R;
+import com.blockchain.store.playstore.data.types.EthereumPrice;
+import com.blockchain.store.playstore.utilities.net.APIUtils;
+import com.blockchain.store.playstore.crypto.CryptoUtils;
+import com.blockchain.store.playstore.utilities.data.ImageUtils;
 import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 
 import org.json.JSONException;

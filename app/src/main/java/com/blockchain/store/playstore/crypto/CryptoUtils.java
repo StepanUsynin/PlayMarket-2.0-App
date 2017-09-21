@@ -1,16 +1,11 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.crypto;
 
 import android.util.Log;
 
-import org.apache.commons.codec.binary.Hex;
-import org.ethereum.geth.Account;
 import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
 import org.ethereum.geth.Transaction;
-import org.web3j.abi.datatypes.Bytes;
-import org.web3j.crypto.Hash;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

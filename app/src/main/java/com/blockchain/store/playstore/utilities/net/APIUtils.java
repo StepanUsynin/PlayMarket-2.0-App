@@ -1,7 +1,9 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.utilities.net;
 
 import android.os.Environment;
 import android.util.Log;
+
+import com.blockchain.store.playstore.data.types.EthereumPrice;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -16,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,8 +1,6 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.data.content;
 
-import android.graphics.Bitmap;
-
-import com.blockchain.store.playstore.APIUtils;
+import com.blockchain.store.playstore.utilities.net.APIUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +18,7 @@ import java.util.Map;
  * Android template wizards.
  * <p>
  */
-public class AppContent implements Serializable{
+public class AppContent implements Serializable {
 
     /**
      * An array of sample (dummy) items.

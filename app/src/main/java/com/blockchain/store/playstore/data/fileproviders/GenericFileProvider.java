@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.data.fileproviders;
 
 import android.support.v4.content.FileProvider;
 

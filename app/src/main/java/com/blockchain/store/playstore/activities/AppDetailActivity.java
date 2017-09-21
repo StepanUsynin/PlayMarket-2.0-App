@@ -1,10 +1,9 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.activities;
 
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +14,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.blockchain.store.playstore.data.content.AppContent;
+import com.blockchain.store.playstore.R;
+import com.blockchain.store.playstore.data.types.EthereumPrice;
+import com.blockchain.store.playstore.utilities.installer.ApkInstaller;
+import com.blockchain.store.playstore.utilities.net.APIUtils;
+import com.blockchain.store.playstore.crypto.CryptoUtils;
+import com.blockchain.store.playstore.utilities.data.ImageUtils;
+import com.blockchain.store.playstore.utilities.device.PermissionUtils;
 
 import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;

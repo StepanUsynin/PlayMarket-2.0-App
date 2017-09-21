@@ -10,5 +10,5 @@
     android:layout_marginRight="16dp"
     android:orientation="horizontal"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.blockchain.store.playstore.AppListActivity"
+    tools:context="com.blockchain.store.playstore.activities.AppListActivity"
     tools:listitem="@layout/app_list_content" />

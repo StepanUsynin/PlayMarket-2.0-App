@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.activities;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -11,9 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.ethereum.geth.Address;
-import org.ethereum.geth.BigInt;
-import org.ethereum.geth.Transaction;
+import com.blockchain.store.playstore.R;
+import com.blockchain.store.playstore.crypto.CryptoUtils;
 
 import io.ethmobile.ethdroid.KeyManager;
 

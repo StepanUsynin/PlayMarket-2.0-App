@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.utilities.device;
 
 import android.os.Build;
 import android.util.Log;

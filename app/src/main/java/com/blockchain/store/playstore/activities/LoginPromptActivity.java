@@ -1,9 +1,11 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.blockchain.store.playstore.R;
 
 public class LoginPromptActivity extends AppCompatActivity {
 

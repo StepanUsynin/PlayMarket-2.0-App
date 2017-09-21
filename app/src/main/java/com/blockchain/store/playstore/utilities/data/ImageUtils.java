@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.utilities.data;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

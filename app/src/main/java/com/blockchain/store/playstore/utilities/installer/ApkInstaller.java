@@ -1,20 +1,20 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.utilities.installer;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+
+import com.blockchain.store.playstore.utilities.net.HttpDownloadUtility;
+import com.blockchain.store.playstore.utilities.device.BuildUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import static android.support.v4.content.FileProvider.getUriForFile;
 
 /**
  * Created by samsheff on 23/08/2017.

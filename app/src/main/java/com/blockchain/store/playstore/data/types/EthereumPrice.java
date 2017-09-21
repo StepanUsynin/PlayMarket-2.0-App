@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.data.types;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

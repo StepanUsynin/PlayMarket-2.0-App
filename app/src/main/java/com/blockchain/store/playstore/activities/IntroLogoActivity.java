@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import com.blockchain.store.playstore.R;
+import com.blockchain.store.playstore.utilities.net.APIUtils;
+import com.blockchain.store.playstore.utilities.device.BuildUtils;
+import com.blockchain.store.playstore.crypto.CryptoUtils;
+import com.blockchain.store.playstore.utilities.net.NodeUtils;
+import com.blockchain.store.playstore.utilities.device.PermissionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;

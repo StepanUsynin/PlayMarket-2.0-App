@@ -1,4 +1,4 @@
-package com.blockchain.store.playstore;
+package com.blockchain.store.playstore.utilities.net;
 
 import android.util.Log;
 
