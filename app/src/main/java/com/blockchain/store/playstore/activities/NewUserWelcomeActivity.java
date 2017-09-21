@@ -92,7 +92,7 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
     }
 
     public void goToFeaturedAppsPage(View view) {
-        Intent myIntent=new Intent(getApplicationContext(), AppListActivity.class );
+        Intent myIntent=new Intent(getApplicationContext(), MainMenuActivity.class );
         startActivityForResult(myIntent,0);
     }
 }

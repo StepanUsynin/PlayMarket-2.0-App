@@ -6,23 +6,33 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blockchain.store.playstore.data.content.AppContent;
 import com.blockchain.store.playstore.R;
-import com.blockchain.store.playstore.data.types.EthereumPrice;
-import com.blockchain.store.playstore.utilities.net.APIUtils;
 import com.blockchain.store.playstore.crypto.CryptoUtils;
+import com.blockchain.store.playstore.data.content.AppContent;
+import com.blockchain.store.playstore.data.types.EthereumPrice;
 import com.blockchain.store.playstore.utilities.data.ImageUtils;
+import com.blockchain.store.playstore.utilities.drawable.HamburgerDrawable;
+import com.blockchain.store.playstore.utilities.net.APIUtils;
 import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 
 import org.json.JSONException;
@@ -32,20 +42,9 @@ import java.util.List;
 
 import io.ethmobile.ethdroid.KeyManager;
 
-/**
- * An activity representing a list of Apps. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link AppDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
-public class AppListActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private boolean mTwoPane;
 
     private AppContent content;
@@ -57,28 +56,84 @@ public class AppListActivity extends AppCompatActivity {
     private ProgressBar loadingSpinner;
     private KeyManager keyManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_list);
+        setContentView(R.layout.activity_main_menu);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.setDrawerArrowDrawable(new HamburgerDrawable(this));
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         setupKeyManager();
-
-        if (findViewById(R.id.app_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
-
         displayBalanceAlert();
         setupRecyclersAndFetchContent();
     }
 
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     protected void setupKeyManager() {
         keyManager = CryptoUtils.setupKeyManager(getFilesDir().getAbsolutePath());
@@ -121,7 +176,7 @@ public class AppListActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(content.ITEMS));
+        recyclerView.setAdapter(new MainMenuActivity.SimpleItemRecyclerViewAdapter(content.ITEMS));
     }
 
     private InfiniteScrollListener createInfiniteScrollListener(final AppContent AppContent, final RecyclerView recyclerView) {
@@ -144,7 +199,7 @@ public class AppListActivity extends AppCompatActivity {
                             public void run() {
                                 // when new items are loaded, combine old and new items, pass them to your adapter
                                 // and call refreshView(...) method from InfiniteScrollListener class to refresh RecyclerView
-                                refreshView(recyclerView, new SimpleItemRecyclerViewAdapter(AppContent.ITEMS), firstVisibleItemPosition - AppContent.FETCH_COUNT );
+                                refreshView(recyclerView, new MainMenuActivity.SimpleItemRecyclerViewAdapter(AppContent.ITEMS), firstVisibleItemPosition - AppContent.FETCH_COUNT );
                             }
                         });
                     }
@@ -156,7 +211,7 @@ public class AppListActivity extends AppCompatActivity {
     }
 
     public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+            extends RecyclerView.Adapter<MainMenuActivity.SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final List<AppContent.AppItem> mValues;
 
@@ -165,14 +220,14 @@ public class AppListActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MainMenuActivity.SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.app_list_content, parent, false);
-            return new ViewHolder(view);
+            return new MainMenuActivity.SimpleItemRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final MainMenuActivity.SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             holder.mIconView.setImageDrawable(getResources().getDrawable(R.mipmap.ic_snapchat));
             holder.mContentView.setText(mValues.get(position).name);
@@ -250,8 +305,8 @@ public class AppListActivity extends AppCompatActivity {
                         recyclerView2 = (RecyclerView) findViewById(R.id.app_list);
                         assert recyclerView2 != null;
                         setupRecyclerView(recyclerView2, content1);
-                        recyclerViewTop.setAdapter(new SimpleItemRecyclerViewAdapter(content.ITEMS));
-                        recyclerView2.setAdapter(new SimpleItemRecyclerViewAdapter(content1.ITEMS));
+                        recyclerViewTop.setAdapter(new MainMenuActivity.SimpleItemRecyclerViewAdapter(content.ITEMS));
+                        recyclerView2.setAdapter(new MainMenuActivity.SimpleItemRecyclerViewAdapter(content1.ITEMS));
 
                         recyclerViewTop.addOnScrollListener(new RecyclerView.OnScrollListener() {
                             @Override

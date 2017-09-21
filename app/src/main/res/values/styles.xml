@@ -23,4 +23,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="ActionBarStyle">
+        <item name="android:actionBarSize">64dp</item>
+        <item name="actionBarSize">64dp</item>
+    </style>
+
 </resources>
