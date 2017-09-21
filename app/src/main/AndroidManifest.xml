@@ -57,10 +57,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.blockchain.store.playstore.activities.AppListActivity" />
         </activity>
-        <activity
-            android:name=".activities.MenuActivity"
-            android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
