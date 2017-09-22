@@ -28,4 +28,11 @@
         <item name="actionBarSize">64dp</item>
     </style>
 
+    <style name="categoryRadioButton">
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">75dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/radio_button_categories</item>
+    </style>
+
 </resources>
