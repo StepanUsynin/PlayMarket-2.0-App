@@ -17,6 +17,8 @@ import com.blockchain.store.playstore.utilities.data.ClipboardUtils;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+
 import io.ethmobile.ethdroid.KeyManager;
 
 public class NewUserWelcomeActivity extends AppCompatActivity {
@@ -65,7 +67,12 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
 
     public void copyKeyJsonToClipboard(View view) {
         try {
-            ClipboardUtils.copyToClipboard(getApplicationContext(), keyManager.getKeystore().exportKey(keyManager.getAccounts().get(0), "Test", "").toString());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            for (byte b : keyManager.getKeystore().exportKey(keyManager.getAccounts().get(0), "Test", "")) {
+                baos.write(b);
+            }
+
+            ClipboardUtils.copyToClipboard(getApplicationContext(), baos.toString("UTF-8"));
             showBackupAlert();
         } catch (Exception e) {
             e.printStackTrace();
