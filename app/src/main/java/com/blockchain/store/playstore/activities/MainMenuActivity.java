@@ -39,6 +39,7 @@ import com.blockchain.store.playstore.utilities.drawable.HamburgerDrawable;
 import com.blockchain.store.playstore.utilities.net.APIUtils;
 import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 
+import org.ethereum.geth.Account;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -126,7 +127,7 @@ public class MainMenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_account) {
-
+            goToAccountsPage();
         } else if (id == R.id.nav_add_funds) {
             showAddFundsDialog();
         } else if (id == R.id.nav_ico) {
@@ -138,6 +139,11 @@ public class MainMenuActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void goToAccountsPage() {
+        Intent myIntent=new Intent(getApplicationContext(), AccountManagementActivity.class );
+        startActivityForResult(myIntent,0);
     }
 
     public void showAddFundsDialog() {
