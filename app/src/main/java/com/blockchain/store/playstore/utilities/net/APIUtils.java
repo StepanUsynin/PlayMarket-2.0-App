@@ -36,13 +36,13 @@ public class APIUtils {
     public static APIUtils api;
 
     public static final String PLAYMARKET_BASE_URL = ".playmarket.io";
-    public static final String GET_ADDRESS_CONTRACT_URL = "/v1/getAddressContract";
-    public static final String GET_BALANCE_URL = "/v1/getBalance";
-    public static final String GET_NONCE_URL = "/v1/getTransactionCount";
-    public static final String GET_GAS_PRICE_URL = "/v1/getGasPrice";
-    public static final String SEND_TX_URL = "/v1/sendRawTransaction";
-    public static final String GET_APP_URL = "/v1/getApp";
-    public static final String GET_APK_URL = "/v1/loadApp";
+    public static final String GET_ADDRESS_CONTRACT_URL = "/v2/getAddressContract";
+    public static final String GET_BALANCE_URL = "/v2/getBalance";
+    public static final String GET_NONCE_URL = "/v2/getTransactionCount";
+    public static final String GET_GAS_PRICE_URL = "/v2/getGasPrice";
+    public static final String SEND_TX_URL = "/v2/sendRawTransaction";
+    public static final String GET_APP_URL = "/v2/getApp";
+    public static final String GET_APK_URL = "/v2/loadApp";
 
     public static final String CATEGORY_ID_PARAM = "idCTG";
     public static final String GET_APP_PARAM = "getApp";
@@ -341,14 +341,14 @@ public class APIUtils {
             }
         });
     }
-    public static String getApkLink(String address, String idApp, String idCat) {
-        Log.d("NET", nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat);
-        return nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat;
+    public static String getApkLink(String address, String idApp, String idCat, String hashIPFS) {
+        Log.d("NET", nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS);
+        return nodeUrl + GET_APK_URL + "?address=" + address + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS;
     }
 
-    public static String getSendTxLink(String tx, String idApp, String idCat) {
-        Log.d("NET", nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat);
-        return nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat;
+    public static String getSendTxLink(String tx, String idApp, String idCat, String hashIPFS) {
+        Log.d("NET", nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS);
+        return nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS;
     }
 
     public static HttpClient createHttpClient() {

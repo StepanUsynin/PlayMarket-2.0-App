@@ -50,6 +50,7 @@ public class AppDetailActivity extends AppCompatActivity {
     String idApp2 = "";
     int idApp = 0;
     int idCat = 0;
+    String hashIPFS;
 
     private KeyManager keyManager;
 
@@ -74,6 +75,7 @@ public class AppDetailActivity extends AppCompatActivity {
         idCat = Integer.valueOf(item.category);
         price = new EthereumPrice(String.valueOf(item.price));
         free = item.free;
+        hashIPFS = item.hashIPFS;
 
         appTitleHeader.setText(item.name);
         titleViewBody.setText(item.name);
@@ -243,8 +245,8 @@ public class AppDetailActivity extends AppCompatActivity {
         ApkInstaller apkInstaller = new ApkInstaller();
         apkInstaller.setContext(getApplicationContext());
         try {
-            apkInstaller.execute(APIUtils.getApkLink(keyManager.getAccounts().get(0).getAddress().getHex(), idApp2, String.valueOf(idCat)),
-                    APIUtils.getSendTxLink("0x" + tx, idApp2, String.valueOf(idCat)));
+            apkInstaller.execute(APIUtils.getApkLink(keyManager.getAccounts().get(0).getAddress().getHex(), idApp2, String.valueOf(idCat), hashIPFS),
+                    APIUtils.getSendTxLink("0x" + tx, idApp2, String.valueOf(idCat), hashIPFS));
         } catch (Exception e) {
             e.printStackTrace();
         }
