@@ -33,7 +33,7 @@ public class AccountManagementActivity extends AppCompatActivity {
     private TextView MainTextView;
     private ImageButton CopyWalletBackupImageButton;
 
-    private String AccountManagementText = "This is the account management section.\n\n\n\nHere you can view your address and make an encrypted copy of your wallet.";
+    private String AccountManagementText = "This is the account management section.\n\nIt is important to make a copy of your account's keys. Click Backup Wallet to copy your wallet to the clipbaord. Save it somewhere safe!\n\nYour address:";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

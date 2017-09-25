@@ -28,6 +28,10 @@ public class PermissionsPromptActivity extends AppCompatActivity {
     }
 
     public void requestPermissions(View view) {
+        if (PermissionUtils.storagePermissionGranted(this)) {
+            goToLoginPromptActivity();
+        }
+
         PermissionUtils.verifyStoragePermissions(this);
     }
 
