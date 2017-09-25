@@ -13,6 +13,10 @@ public class BuildUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
+    public static boolean needsStoragePermission() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
     public static boolean isXaomi() {
         return Build.BRAND == "Xiaomi";
     }

@@ -2,8 +2,15 @@ package com.blockchain.store.playstore.utilities.device;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.view.View;
+
+import org.spongycastle.util.Pack;
 
 /**
  * Created by samsheff on 08/09/2017.
@@ -17,6 +24,10 @@ public class PermissionUtils {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    public static boolean storagePermissionGranted(Activity activity) {
+        return (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -29,6 +40,13 @@ public class PermissionUtils {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+    }
+
+    private static void goToAppSettingsPage(Context context, Activity activity) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+        intent.setData(uri);
+        activity.startActivityForResult(intent, 0);
     }
 
 }

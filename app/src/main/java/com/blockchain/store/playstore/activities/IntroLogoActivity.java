@@ -18,7 +18,6 @@ import com.blockchain.store.playstore.utilities.net.APIUtils;
 import com.blockchain.store.playstore.utilities.device.BuildUtils;
 import com.blockchain.store.playstore.crypto.CryptoUtils;
 import com.blockchain.store.playstore.utilities.net.NodeUtils;
-import com.blockchain.store.playstore.utilities.device.PermissionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ public class IntroLogoActivity extends AppCompatActivity {
         initViewVariables();
         setLogoTextFont();
         setupAndPlayVideo();
-        PermissionUtils.verifyStoragePermissions(this);
         setDatadir();
         startEtherNode();
         getNearestNodes();
@@ -83,8 +81,13 @@ public class IntroLogoActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent myIntent=new Intent(getApplicationContext(),LoginPromptActivity.class );
-                startActivityForResult(myIntent,0);
+                Intent myIntent;
+                if (BuildUtils.needsStoragePermission()) {
+                    myIntent = new Intent(getApplicationContext(), PermissionsPromptActivity.class );
+                } else {
+                    myIntent = new Intent(getApplicationContext(), LoginPromptActivity.class);
+                }
+                startActivityForResult(myIntent, 0);
             }
         }, SplashDisplayLength);
     }
