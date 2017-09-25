@@ -25,6 +25,13 @@ public class LoginPromptActivity extends AppCompatActivity {
 
         setupView();
         setupKeyManager();
+
+        try {
+            if (keyManager.getAccounts().size() > 0)
+                LoadNewUserWelcomeActivity(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
