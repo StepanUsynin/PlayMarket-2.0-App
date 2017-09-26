@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ import com.blockchain.store.playstore.utilities.device.PermissionUtils;
 import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
 import org.ethereum.geth.Transaction;
+
+import java.io.ByteArrayOutputStream;
 
 import io.ethmobile.ethdroid.KeyManager;
 
@@ -148,11 +151,37 @@ public class AppDetailActivity extends AppCompatActivity {
         Button close_btn = (Button) d.findViewById(R.id.close_button);
         close_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                purchase();
+                promptForPassword();
                 d.dismiss();
             }
         });
     }
+
+    public void promptForPassword() {
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.password_prompt_dialog);
+
+        final EditText passwordText = (EditText) d.findViewById(R.id.passwordText);
+
+        d.show();
+
+        TextView addFundsBtn = (TextView) d.findViewById(R.id.continueButton);
+        addFundsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                purchase(passwordText.getText().toString());
+                d.dismiss();
+            }
+        });
+
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+    }
+
 
     public void showAddFundsDialog() {
         final Dialog d = new Dialog(this);
@@ -192,7 +221,7 @@ public class AppDetailActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-    public void purchase() {
+    public void purchase(final String password) {
         displayProccessingAlert();
 
         Thread thread = new Thread(new Runnable(){
@@ -210,7 +239,7 @@ public class AppDetailActivity extends AppCompatActivity {
                                 value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(idApp2, String.valueOf(idCat)));
 
                         try {
-                            Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), "Test", tx, new BigInt(3));
+                            Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), password, tx, new BigInt(3));
 
                             Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
 

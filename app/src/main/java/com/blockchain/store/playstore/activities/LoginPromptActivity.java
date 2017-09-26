@@ -1,10 +1,14 @@
 package com.blockchain.store.playstore.activities;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blockchain.store.playstore.R;
@@ -17,6 +21,8 @@ public class LoginPromptActivity extends AppCompatActivity {
 
     private KeyManager keyManager;
     private EditText importUserButton;
+
+    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,7 @@ public class LoginPromptActivity extends AppCompatActivity {
     }
 
     public void setupView() {
+        activity = this;
         importUserButton = (EditText) findViewById(R.id.ImportUserButton);
         importUserButton.setOnClickListener(importAddressFromClipboard);
     }
@@ -53,15 +60,35 @@ public class LoginPromptActivity extends AppCompatActivity {
 
     private View.OnClickListener importAddressFromClipboard = new View.OnClickListener() {
         public void onClick(View v) {
-            try {
-                ClipboardUtils.importKeyFromClipboard(getApplicationContext(), keyManager.getKeystore());
-                showImportSuccessfulAlert();
-                goToFeaturedAppsPage(null);
+            final Dialog d = new Dialog(activity);
+            d.setContentView(R.layout.password_prompt_dialog);
 
-            } catch (Exception e) {
-                showImportFailedAlert();
-                e.printStackTrace();
-            }
+            final EditText passwordText = (EditText) d.findViewById(R.id.passwordText);
+
+            d.show();
+
+            TextView addFundsBtn = (TextView) d.findViewById(R.id.continueButton);
+            addFundsBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    try {
+                        ClipboardUtils.importKeyFromClipboard(getApplicationContext(), keyManager.getKeystore(), passwordText.getText().toString());
+                        showImportSuccessfulAlert();
+                        d.dismiss();
+                        goToFeaturedAppsPage(null);
+                    } catch (Exception e) {
+                        showImportFailedAlert();
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+            Button close_btn = (Button) d.findViewById(R.id.close_button);
+            close_btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    d.dismiss();
+                }
+            });
         }
     };
 

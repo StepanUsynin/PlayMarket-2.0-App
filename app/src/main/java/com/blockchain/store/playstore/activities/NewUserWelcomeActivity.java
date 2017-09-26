@@ -1,5 +1,6 @@
 package com.blockchain.store.playstore.activities;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,10 +68,10 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
         }
     };
 
-    public void copyKeyJsonToClipboard(View view) {
+    public void copyKeyJsonToClipboard(String password) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            for (byte b : keyManager.getKeystore().exportKey(keyManager.getAccounts().get(0), "Test", "")) {
+            for (byte b : keyManager.getKeystore().exportKey(keyManager.getAccounts().get(0), password, password)) {
                 baos.write(b);
             }
 
@@ -78,6 +81,56 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     };
+
+    public void promptForPassword(View view) {
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.password_prompt_dialog);
+
+        final EditText passwordText = (EditText) d.findViewById(R.id.passwordText);
+
+        d.show();
+
+        TextView addFundsBtn = (TextView) d.findViewById(R.id.continueButton);
+        addFundsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                copyKeyJsonToClipboard(passwordText.getText().toString());
+                d.dismiss();
+            }
+        });
+
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+    }
+
+    public void promptForPasswordForNewAccount() {
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.password_prompt_dialog);
+
+        final EditText passwordText = (EditText) d.findViewById(R.id.passwordText);
+
+        d.show();
+
+        TextView addFundsBtn = (TextView) d.findViewById(R.id.continueButton);
+        addFundsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                makeNewAccount(passwordText.getText().toString());
+                d.dismiss();
+            }
+        });
+
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+    }
 
     private void showCopiedAlert() {
         Toast.makeText(getApplicationContext(), "Address Copied!",
@@ -89,18 +142,23 @@ public class NewUserWelcomeActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
+    protected void makeNewAccount(String password) {
+        try {
+            keyManager.newAccount(password);
+            etherAddress = keyManager.getAccounts().get(0).getAddress().getHex();
+            Log.d("Ether", etherAddress);
+            AddressTextView.setText(etherAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void setupKeyManager() {
         try {
              keyManager = CryptoUtils.setupKeyManager(datadir);
 
             if (keyManager.getAccounts().isEmpty()) {
-                keyManager.newAccount("Test");
-
-                etherAddress = keyManager.getAccounts().get(0).getAddress().getHex();
-
-                Log.d("Ether", etherAddress);
-                AddressTextView.setText(etherAddress);
-
+                promptForPasswordForNewAccount();
             } else {
 
                 etherAddress = keyManager.getAccounts().get(0).getAddress().getHex();

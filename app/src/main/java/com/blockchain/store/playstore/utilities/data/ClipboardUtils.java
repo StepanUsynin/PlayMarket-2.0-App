@@ -18,14 +18,14 @@ public class ClipboardUtils {
         clipboard.setPrimaryClip(clip);
     }
 
-    public static void importKeyFromClipboard(Context context, KeyStore keystore) throws Exception {
+    public static void importKeyFromClipboard(Context context, KeyStore keystore, String password) throws Exception {
 
         if (keystore.getAccounts().size() > 0) {
-            keystore.deleteAccount(keystore.getAccounts().get(0), "Test");
+            keystore.deleteAccount(keystore.getAccounts().get(0), password);
         }
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         byte[] key = clipboard.getPrimaryClip().getItemAt(0).getText().toString().getBytes();
-        keystore.importKey(key, "", "Test");
+        keystore.importKey(key, password, password);
     }
 
 }

@@ -38,7 +38,7 @@
         android:layout_marginLeft="57dp"
         android:layout_marginRight="57dp"
         android:layout_marginStart="57dp"
-        android:onClick="copyKeyJsonToClipboard"
+        android:onClick="promptForPassword"
         android:text="Backup Wallet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
