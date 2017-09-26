@@ -43,6 +43,7 @@ public class APIUtils {
     public static final String SEND_TX_URL = "/v2/sendRawTransaction";
     public static final String GET_APP_URL = "/v2/getApp";
     public static final String GET_APK_URL = "/v2/loadApp";
+    public static final String LOAD_PICTURE_URL = "/v2/loadPicture";
 
     public static final String CATEGORY_ID_PARAM = "idCTG";
     public static final String GET_APP_PARAM = "getApp";
@@ -349,6 +350,19 @@ public class APIUtils {
     public static String getSendTxLink(String tx, String idApp, String idCat, String hashIPFS) {
         Log.d("NET", nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS);
         return nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS;
+    }
+
+    public String generateMarkdownForImages(String hash, int count) {
+        String markdown = "\n\n\n<span style=\"display:block;text-align:center\">";
+        for (int i = 1; i <= count; i++) {
+            markdown += "![Test](" + nodeUrl + LOAD_PICTURE_URL + "?hashIpfs=" + hash + "&picture=" + i + ".jpg)\n";
+        }
+
+        markdown += "</span>";
+
+        Log.d("NET", markdown);
+
+        return markdown;
     }
 
     public static HttpClient createHttpClient() {

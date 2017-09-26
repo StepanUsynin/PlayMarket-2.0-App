@@ -56,6 +56,7 @@ public class AppDetailActivity extends AppCompatActivity {
     int idCat = 0;
     String hashIPFS;
     String descriptionText;
+    int imageCount;
 
     private KeyManager keyManager;
 
@@ -82,6 +83,7 @@ public class AppDetailActivity extends AppCompatActivity {
         free = item.free;
         hashIPFS = item.hashIPFS;
         descriptionText = item.description;
+        imageCount = item.imageCount;
 
         appTitleHeader.setText(item.name);
         titleViewBody.setText(item.name);
@@ -110,7 +112,7 @@ public class AppDetailActivity extends AppCompatActivity {
         }
 
         MarkdownView markdownView = (MarkdownView) findViewById(R.id.markdownView);
-        markdownView.loadMarkdown(descriptionText);
+        markdownView.loadMarkdown(descriptionText + APIUtils.api.generateMarkdownForImages(hashIPFS, imageCount));
     }
 
     protected void setupKeyManager() {
