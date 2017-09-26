@@ -116,7 +116,7 @@ public class AppContent implements Serializable {
 
         return new AppItem(String.valueOf(position), app.getString("idApp"),
                     app.getString("idCTG"), idApp, app.getString("developer"),
-                    price, price, free, makeDetails(1), icon, hashIPFS);
+                    price, price, free, makeDetails(1), icon, hashIPFS, app.getString("description"));
     }
 
     private String makeDetails(int position) {
@@ -143,8 +143,9 @@ public class AppContent implements Serializable {
         public String category;
         public String icon;
         public String hashIPFS;
+        public String description;
 
-        public AppItem(String id, String appId, String category, String content, String developer, String price, String priceWei, boolean free, String details, String icon, String hashIPFS) {
+        public AppItem(String id, String appId, String category, String content, String developer, String price, String priceWei, boolean free, String details, String icon, String hashIPFS, String description) {
             this.id = id;
             this.appId = appId;
             this.category = category;
@@ -156,6 +157,7 @@ public class AppContent implements Serializable {
             this.free = free;
             this.icon = icon;
             this.hashIPFS = hashIPFS;
+            this.description = description;
         }
 
         @Override

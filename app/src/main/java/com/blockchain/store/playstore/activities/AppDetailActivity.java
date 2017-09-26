@@ -33,6 +33,7 @@ import org.ethereum.geth.Transaction;
 import java.io.ByteArrayOutputStream;
 
 import io.ethmobile.ethdroid.KeyManager;
+import us.feras.mdv.MarkdownView;
 
 /**
  * An activity representing a single App detail screen. This
@@ -54,6 +55,7 @@ public class AppDetailActivity extends AppCompatActivity {
     int idApp = 0;
     int idCat = 0;
     String hashIPFS;
+    String descriptionText;
 
     private KeyManager keyManager;
 
@@ -79,6 +81,7 @@ public class AppDetailActivity extends AppCompatActivity {
         price = new EthereumPrice(String.valueOf(item.price));
         free = item.free;
         hashIPFS = item.hashIPFS;
+        descriptionText = item.description;
 
         appTitleHeader.setText(item.name);
         titleViewBody.setText(item.name);
@@ -105,6 +108,9 @@ public class AppDetailActivity extends AppCompatActivity {
             }
 
         }
+
+        MarkdownView markdownView = (MarkdownView) findViewById(R.id.markdownView);
+        markdownView.loadMarkdown(descriptionText);
     }
 
     protected void setupKeyManager() {

@@ -49,5 +49,6 @@ dependencies {
     compile 'com.github.pwittchen:infinitescroll:0.0.1'
     compile 'org.web3j:core-android:2.2.1'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'us.feras.mdv:markdownview:1.1.0'
     testCompile 'junit:junit:4.12'
 }
