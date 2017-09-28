@@ -112,7 +112,7 @@ public class AppDetailActivity extends AppCompatActivity {
         }
 
         MarkdownView markdownView = (MarkdownView) findViewById(R.id.markdownView);
-        markdownView.loadMarkdown(descriptionText + APIUtils.api.generateMarkdownForImages(hashIPFS, imageCount));
+        markdownView.loadMarkdown(APIUtils.api.generateMarkdownForThumbnail(hashIPFS) + descriptionText + APIUtils.api.generateMarkdownForImages(hashIPFS, imageCount));
     }
 
     protected void setupKeyManager() {

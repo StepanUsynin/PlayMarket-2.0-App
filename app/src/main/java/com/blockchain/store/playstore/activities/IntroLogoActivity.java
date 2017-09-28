@@ -22,6 +22,8 @@ import com.blockchain.store.playstore.utilities.net.NodeUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.blockchain.store.playmarketsdk.PlayMarket;
+
 public class IntroLogoActivity extends AppCompatActivity {
 
     TextView logoTextView;
@@ -42,6 +44,7 @@ public class IntroLogoActivity extends AppCompatActivity {
         startEtherNode();
         getNearestNodes();
         BuildUtils.printPhoneInfo();
+        PlayMarket.startPurchaseVerifierService(this);
         loadLoginPromptActivity();
     }
 

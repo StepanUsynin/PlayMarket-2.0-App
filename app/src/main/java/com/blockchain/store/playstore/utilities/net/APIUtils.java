@@ -353,7 +353,7 @@ public class APIUtils {
     }
 
     public String generateMarkdownForImages(String hash, int count) {
-        String markdown = "\n\n\n<span style=\"display:block;text-align:center\">";
+        String markdown = "\n\n\n<span style=\"display:block;text-align:center;width:100%;\">";
         for (int i = 1; i <= count; i++) {
             markdown += "![Test](" + nodeUrl + LOAD_PICTURE_URL + "?hashIpfs=" + hash + "&picture=" + i + ".jpg)\n";
         }
@@ -361,6 +361,14 @@ public class APIUtils {
         markdown += "</span>";
 
         Log.d("NET", markdown);
+
+        return markdown;
+    }
+
+    public String generateMarkdownForThumbnail(String hash) {
+        String markdown = "\n\n\n<span style=\"display:block;text-align:center;width:100%;\">";
+        markdown += "![Test](" + nodeUrl + LOAD_PICTURE_URL + "?hashIpfs=" + hash + "&picture=thumbnail.jpg)\n";
+        markdown += "</span>";
 
         return markdown;
     }

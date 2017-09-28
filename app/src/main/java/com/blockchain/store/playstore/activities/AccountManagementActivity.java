@@ -169,7 +169,7 @@ public class AccountManagementActivity extends AppCompatActivity {
 
                 etherAddress = keyManager.getAccounts().get(0).getAddress().getHex();
                 Log.d("Ether", etherAddress);
-
+                AddressTextView.setText(etherAddress);
             }
 
         } catch (Exception e) {

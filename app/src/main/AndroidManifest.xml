@@ -66,6 +66,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activities.PermissionsPromptActivity"></activity>
+
     </application>
 
 </manifest>

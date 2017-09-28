@@ -65,7 +65,7 @@ public class EthereumPrice {
 
     private DecimalFormat makeDecimalFormat() {
         DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
+        df.setMaximumFractionDigits(3);
         df.setMinimumFractionDigits(0);
         df.setGroupingUsed(false);
 
