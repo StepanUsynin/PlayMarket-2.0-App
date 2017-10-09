@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "com.blockchain.store.playstore"
+        applicationId "com.blockchain.store.playmarket"
         minSdkVersion 21
         targetSdkVersion 25
         multiDexEnabled true

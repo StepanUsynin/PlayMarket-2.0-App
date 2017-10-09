@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.blockchain.store.playstore">
+    package="com.blockchain.store.playmarket">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.blockchain.store.playstore.fileprovider"
+            android:authorities="com.blockchain.store.playmarket.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -58,7 +58,7 @@
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.blockchain.store.playstore.activities.AppListActivity" />
+                android:value="com.blockchain.store.playmarket.activities.AppListActivity" />
         </activity>
         <activity
             android:name=".activities.MainMenuActivity"
@@ -66,6 +66,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activities.PermissionsPromptActivity"></activity>
+
+        <service
+            android:name="com.blockchain.store.playmarket.services.PurchaseVerifierService"
+            android:exported="true"/>
 
     </application>
 
