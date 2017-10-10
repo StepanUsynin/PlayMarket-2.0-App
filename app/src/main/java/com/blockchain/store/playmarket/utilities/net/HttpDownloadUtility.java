@@ -1,13 +1,13 @@
 package com.blockchain.store.playmarket.utilities.net;
 
-    import android.util.Log;
+import android.util.Log;
 
-    import java.io.File;
-    import java.io.FileOutputStream;
-    import java.io.IOException;
-    import java.io.InputStream;
-    import java.net.HttpURLConnection;
-    import java.net.URL;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * A utility that downloads a file from a URL.

@@ -8,9 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.view.View;
-
-import org.spongycastle.util.Pack;
 
 /**
  * Created by samsheff on 08/09/2017.

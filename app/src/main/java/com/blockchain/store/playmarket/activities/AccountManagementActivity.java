@@ -1,10 +1,6 @@
 package com.blockchain.store.playmarket.activities;
 
 import android.app.Dialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,17 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blockchain.store.playmarket.R;
 import com.blockchain.store.playmarket.crypto.CryptoUtils;
 import com.blockchain.store.playmarket.utilities.data.ClipboardUtils;
-import com.blockchain.store.playmarket.utilities.net.APIUtils;
-
-import org.w3c.dom.Text;
-import org.web3j.protocol.Web3jFactory;
 
 import java.io.ByteArrayOutputStream;
 

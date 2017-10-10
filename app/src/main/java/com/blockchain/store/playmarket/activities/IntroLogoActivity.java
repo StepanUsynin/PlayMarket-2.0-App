@@ -1,6 +1,5 @@
 package com.blockchain.store.playmarket.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.blockchain.store.playmarket.R;
-import com.blockchain.store.playmarket.services.PurchaseVerifierService;
 import com.blockchain.store.playmarket.utilities.net.APIUtils;
 import com.blockchain.store.playmarket.utilities.device.BuildUtils;
 import com.blockchain.store.playmarket.crypto.CryptoUtils;
@@ -23,8 +21,6 @@ import com.blockchain.store.playmarket.utilities.net.NodeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import com.blockchain.store.playmarketsdk.PlayMarket;
 
 public class IntroLogoActivity extends AppCompatActivity {
 
