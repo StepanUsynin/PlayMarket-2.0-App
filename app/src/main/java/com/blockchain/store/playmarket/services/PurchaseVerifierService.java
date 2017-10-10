@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.blockchain.store.playmarket.crypto.CryptoUtils;
+import com.blockchain.store.playmarket.utilities.net.NodeUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -106,15 +107,15 @@ public class PurchaseVerifierService extends IntentService {
     }
 
     protected String getNearestNodes() throws IOException {
-        ArrayList coords = Node.getCoordinates();
+        ArrayList coords = NodeUtils.getCoordinates();
         Log.d("Location", coords.get(0).toString() + "," + coords.get(1).toString());
 
-        String[] nodes = Node.getNodesList(Node.NODES_DNS_SERVER);
+        String[] nodes = NodeUtils.getNodesList(NodeUtils.NODES_DNS_SERVER);
         for (String node : nodes) {
             Log.d("Node", node);
         }
 
-        String nearestNodeIP = Node.getNearestNode(nodes, (double) coords.get(0), (double) coords.get(1));
+        String nearestNodeIP = NodeUtils.getNearestNode(nodes, (double) coords.get(0), (double) coords.get(1));
         Log.d("Node", nearestNodeIP);
 
         return nearestNodeIP;
