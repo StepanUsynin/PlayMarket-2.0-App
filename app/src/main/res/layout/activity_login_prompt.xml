@@ -13,7 +13,7 @@
         android:layout_width="252dp"
         android:layout_height="30dp"
         android:layout_marginEnd="18dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="18dp"
         android:text="PLAYMARKET 2.0"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -23,7 +23,9 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/LogoImageView"
         tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toRightOf="@+id/LogoImageView"
+        android:layout_marginLeft="8dp" />
 
     <ImageView
         android:id="@+id/LogoImageView"
@@ -39,23 +41,22 @@
 
     <TextView
         android:id="@+id/LoginPromptTextView"
-        android:layout_width="288dp"
+        android:layout_width="0dp"
         android:layout_height="96dp"
         android:layout_marginEnd="58dp"
-        android:layout_marginLeft="58dp"
-        android:layout_marginRight="58dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="58dp"
         android:layout_marginTop="38dp"
         android:text="Welcome!\n\nTo create a new wallet, click New User. To import an Etherium JSON wallet from the clipboard, tap Import User."
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LogoImageView"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1"
-        app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/NewUserButton" />
+        app:layout_constraintBottom_toTopOf="@+id/NewUserButton"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/NewUserButton"
@@ -75,7 +76,9 @@
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.499" />
 
     <EditText
         android:id="@+id/ImportUserButton"

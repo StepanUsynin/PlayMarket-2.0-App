@@ -53,7 +53,7 @@
 
     <TextView
         android:id="@+id/LogoTextView"
-        android:layout_width="234dp"
+        android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
@@ -70,7 +70,8 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1"
         app:layout_constraintLeft_toRightOf="@+id/LogoImageView"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="0.921" />
 
     <ImageView
         android:id="@+id/LogoImageView"
@@ -90,12 +91,12 @@
 
     <TextView
         android:id="@+id/NewUserWelcomeTextView"
-        android:layout_width="331dp"
+        android:layout_width="0dp"
         android:layout_height="153dp"
         android:layout_marginBottom="105dp"
         android:layout_marginEnd="42dp"
-        android:layout_marginLeft="42dp"
-        android:layout_marginRight="42dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="42dp"
         android:layout_marginTop="103dp"
         android:text="Congratulations! You've made a new user.\n\n\nIt is important to make a copy of your account's keys. Click Backup Wallet to copy your wallet to the clipbaord. Save it somewhere safe and then click continue.\n\nYour address:"
@@ -117,8 +118,8 @@
         android:layout_height="34dp"
         android:layout_marginBottom="17dp"
         android:layout_marginEnd="43dp"
-        android:layout_marginLeft="43dp"
-        android:layout_marginRight="43dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="43dp"
         android:layout_marginTop="21dp"
         android:text="0x5197744f9769D3dD2e60D7f6fDE3B61737726D51"
