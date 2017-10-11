@@ -49,6 +49,10 @@ public class EthereumPrice {
     }
 
     public String getDisplayPrice() {
+        if (isZero()) {
+            return "Free";
+        }
+
         String priceUnit = getUnits();
         if  (priceUnit.equals(ETH)) {
             return df.format(inEther()) + " " + ETH;
