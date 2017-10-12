@@ -39,7 +39,6 @@ public class IntroLogoActivity extends AppCompatActivity {
         setLogoTextFont();
         setupAndPlayVideo();
         setDatadir();
-        startEtherNode();
         getNearestNodes();
         BuildUtils.printPhoneInfo();
         loadLoginPromptActivity();
