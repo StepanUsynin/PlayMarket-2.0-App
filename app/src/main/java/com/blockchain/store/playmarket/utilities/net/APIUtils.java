@@ -366,9 +366,9 @@ public class APIUtils {
     }
 
     public String generateMarkdownForThumbnail(String hash) {
-        String markdown = "\n\n\n<span style=\"display:block;text-align:center;width:100%;\">";
-        markdown += "![Test](" + nodeUrl + LOAD_PICTURE_URL + "?hashIpfs=" + hash + "&picture=thumbnail.jpg)\n";
-        markdown += "</span>\n";
+        String markdown = "\n\n\n";
+        markdown += "<img src='" + nodeUrl + LOAD_PICTURE_URL + "?hashIpfs=" + hash + "&picture=thumbnail.jpg' width='100%'>\n";
+        markdown += "\n";
 
         return markdown;
     }
