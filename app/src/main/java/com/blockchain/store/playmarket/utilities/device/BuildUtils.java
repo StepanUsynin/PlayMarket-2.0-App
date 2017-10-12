@@ -33,6 +33,10 @@ public class BuildUtils {
         return Build.MODEL.contains("Redmi 4");
     }
 
+    public static boolean shouldSetMarkdownBackground(){
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
     public static void printPhoneInfo() {
         Log.d("Device", "Manufactuer: " + Build.MANUFACTURER);
         Log.d("Device", "Brand: " + Build.BRAND);

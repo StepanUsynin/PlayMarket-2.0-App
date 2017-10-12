@@ -17,6 +17,7 @@ import com.blockchain.store.playmarket.data.content.AppContent;
 import com.blockchain.store.playmarket.R;
 import com.blockchain.store.playmarket.data.types.EthereumPrice;
 import com.blockchain.store.playmarket.utilities.data.ClipboardUtils;
+import com.blockchain.store.playmarket.utilities.device.BuildUtils;
 import com.blockchain.store.playmarket.utilities.installer.ApkInstaller;
 import com.blockchain.store.playmarket.utilities.net.APIUtils;
 import com.blockchain.store.playmarket.crypto.CryptoUtils;
@@ -26,8 +27,6 @@ import com.blockchain.store.playmarket.utilities.device.PermissionUtils;
 import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
 import org.ethereum.geth.Transaction;
-
-import java.io.ByteArrayOutputStream;
 
 import io.ethmobile.ethdroid.KeyManager;
 import us.feras.mdv.MarkdownView;
@@ -110,6 +109,10 @@ public class AppDetailActivity extends AppCompatActivity {
 
         MarkdownView markdownView = (MarkdownView) findViewById(R.id.markdownView);
         markdownView.loadMarkdown(APIUtils.api.generateMarkdownForThumbnail(hashIPFS) + descriptionText + APIUtils.api.generateMarkdownForImages(hashIPFS, imageCount));
+
+        if (BuildUtils.shouldSetMarkdownBackground()) {
+            markdownView.setBackgroundColor(getColor(R.color.markdownViewBackground));
+        }
     }
 
     protected void setupKeyManager() {
