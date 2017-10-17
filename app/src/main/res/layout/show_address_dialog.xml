@@ -98,7 +98,7 @@
         android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="To add funds to your account, send etherium to your address below"
+        android:text="To add funds to your account, send Ethereum to your address below"
         android:textAlignment="textStart"
         android:textStyle="italic" />
 
