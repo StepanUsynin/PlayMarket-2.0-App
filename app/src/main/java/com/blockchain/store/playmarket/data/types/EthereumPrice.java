@@ -48,8 +48,8 @@ public class EthereumPrice {
         return inGwei().divide(new BigDecimal("1000000000.0"));
     }
 
-    public String getDisplayPrice() {
-        if (isZero()) {
+    public String getDisplayPrice(boolean onlyNumber) {
+        if (isZero() && onlyNumber == false) {
             return "Free";
         }
 

@@ -154,7 +154,7 @@ public class MainMenuActivity extends AppCompatActivity
         }
 
         TextView balanceTextView = (TextView) d.findViewById(R.id.balanceText);
-        balanceTextView.setText(APIUtils.api.balance.getDisplayPrice());
+        balanceTextView.setText(APIUtils.api.balance.getDisplayPrice(true));
 
         Button close_btn = (Button) d.findViewById(R.id.close_button);
         close_btn.setOnClickListener(new View.OnClickListener() {
@@ -205,7 +205,7 @@ public class MainMenuActivity extends AppCompatActivity
                             Toast.makeText(getApplicationContext(), "Balance: " + ether + "." + balance.substring(ether.length(), balance.length() - 16),
                                     Toast.LENGTH_LONG).show();
 
-                            balanceMenuItem.setTitle(APIUtils.api.balance.getDisplayPrice());
+                            balanceMenuItem.setTitle(APIUtils.api.balance.getDisplayPrice(true));
 
                         }
                     });
@@ -279,7 +279,7 @@ public class MainMenuActivity extends AppCompatActivity
             holder.mIconView.setImageDrawable(getResources().getDrawable(R.mipmap.ic_snapchat));
             holder.mContentView.setText(mValues.get(position).name);
             holder.mIconView.setImageBitmap(ImageUtils.getBitmapFromBase64(mValues.get(position).icon));
-            holder.mPriceView.setText(String.valueOf(new EthereumPrice(mValues.get(position).price).getDisplayPrice()));
+            holder.mPriceView.setText(String.valueOf(new EthereumPrice(mValues.get(position).price).getDisplayPrice(false)));
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override

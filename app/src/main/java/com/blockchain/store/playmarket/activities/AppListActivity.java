@@ -177,7 +177,7 @@ public class AppListActivity extends AppCompatActivity {
             holder.mIconView.setImageDrawable(getResources().getDrawable(R.mipmap.ic_snapchat));
             holder.mContentView.setText(mValues.get(position).name);
             holder.mIconView.setImageBitmap(ImageUtils.getBitmapFromBase64(mValues.get(position).icon));
-            holder.mPriceView.setText(String.valueOf(new EthereumPrice(mValues.get(position).price).getDisplayPrice()));
+            holder.mPriceView.setText(String.valueOf(new EthereumPrice(mValues.get(position).price).getDisplayPrice(false)));
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override

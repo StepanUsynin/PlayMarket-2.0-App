@@ -95,14 +95,14 @@ public class AppDetailActivity extends AppCompatActivity {
         } else {
             String priceUnit = price.getUnits();
             if  (priceUnit.equals("ETH")) {
-                priceTextView.setText("Price: " + price.getDisplayPrice());
-                buyButton.setText("Buy: " + price.getDisplayPrice());
+                priceTextView.setText("Price: " + price.getDisplayPrice(false));
+                buyButton.setText("Buy: " + price.getDisplayPrice(false));
             } else if (priceUnit.equals("Gwei")) {
-                priceTextView.setText("Price: " + price.getDisplayPrice());
-                buyButton.setText("Buy: " + price.getDisplayPrice());
+                priceTextView.setText("Price: " + price.getDisplayPrice(false));
+                buyButton.setText("Buy: " + price.getDisplayPrice(false));
             } else {
-                priceTextView.setText("Price: " + price.getDisplayPrice());
-                buyButton.setText("Buy: " + price.getDisplayPrice());
+                priceTextView.setText("Price: " + price.getDisplayPrice(false));
+                buyButton.setText("Buy: " + price.getDisplayPrice(false));
             }
 
         }
@@ -141,7 +141,7 @@ public class AppDetailActivity extends AppCompatActivity {
         appTitleText.setText(appTitleHeader.getText());
 
         TextView balanceText = (TextView) d.findViewById(R.id.balanceText);
-        balanceText.setText(APIUtils.api.balance.getDisplayPrice());
+        balanceText.setText(APIUtils.api.balance.getDisplayPrice(true));
 
         ImageView appIconView = (ImageView) d.findViewById(R.id.appIcon);
         appIconView.setImageDrawable(iconView.getDrawable());
@@ -203,7 +203,7 @@ public class AppDetailActivity extends AppCompatActivity {
         }
 
         TextView balanceTextView = (TextView) d.findViewById(R.id.balanceText);
-        balanceTextView.setText(APIUtils.api.balance.getDisplayPrice());
+        balanceTextView.setText(APIUtils.api.balance.getDisplayPrice(true));
 
         Button close_btn = (Button) d.findViewById(R.id.close_button);
         close_btn.setOnClickListener(new View.OnClickListener() {
