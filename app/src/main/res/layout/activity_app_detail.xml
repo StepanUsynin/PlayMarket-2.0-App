@@ -36,6 +36,7 @@
         android:onClick="investApp"
         android:text="Invest"
         android:textColor="@android:color/background_light"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/actionBtnBackground"
         app:layout_constraintEnd_toStartOf="@+id/buyBtn"
         app:layout_constraintLeft_toLeftOf="@+id/actionBtnBackground"

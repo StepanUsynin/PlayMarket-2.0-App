@@ -9,6 +9,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -41,6 +42,7 @@ public class APIUtils {
     public static final String GET_NONCE_URL = "/v2/getTransactionCount";
     public static final String GET_GAS_PRICE_URL = "/v2/getGasPrice";
     public static final String SEND_TX_URL = "/v2/sendRawTransaction";
+    public static final String SEND_TX_ICO_URL = "/v2/sendRawTransactionICO";
     public static final String GET_APP_URL = "/v2/getApp";
     public static final String GET_APK_URL = "/v2/loadApp";
     public static final String LOAD_PICTURE_URL = "/v2/loadPicture";
@@ -173,18 +175,7 @@ public class APIUtils {
 
     public boolean sendTX(String rawTransaction) throws IOException {
         HttpClient client = createHttpClient();
-        HttpPost request = new HttpPost(nodeUrl + SEND_TX_URL);
-
-        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-        nameValuePair.add(new BasicNameValuePair(SERIALIZED_TRANSACTION_PARAM, "0x" + rawTransaction));
-
-        //Encoding POST data
-        try {
-            request.setEntity(new UrlEncodedFormEntity(nameValuePair));
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        HttpGet request = new HttpGet(getSendTxIcoLink("0x" + rawTransaction));
 
         HttpResponse response;
         response = client.execute(request);
@@ -350,6 +341,11 @@ public class APIUtils {
     public static String getSendTxLink(String tx, String idApp, String idCat, String hashIPFS) {
         Log.d("NET", nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS);
         return nodeUrl + SEND_TX_URL + "?serializedTx=" + tx + "&idApp=" + idApp + "&idCTG=" + idCat + "&hashIpfs=" + hashIPFS;
+    }
+
+    public static String getSendTxIcoLink(String tx) {
+        Log.d("NET", nodeUrl + SEND_TX_ICO_URL + "?serializedTx=" + tx);
+        return nodeUrl + SEND_TX_ICO_URL + "?serializedTx=" + tx;
     }
 
     public String generateMarkdownForImages(String hash, int count) {

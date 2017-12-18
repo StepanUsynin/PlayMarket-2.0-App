@@ -53,25 +53,21 @@
 
     <TextView
         android:id="@+id/LogoTextView"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_width="252dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="25dp"
         android:text="PLAYMARKET 2.0"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
         android:typeface="normal"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"
         app:layout_constraintLeft_toRightOf="@+id/LogoImageView"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.921" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="18dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
         android:id="@+id/LogoImageView"
@@ -86,7 +82,7 @@
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="42dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView

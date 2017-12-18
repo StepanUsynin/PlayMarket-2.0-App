@@ -23,6 +23,7 @@ import com.blockchain.store.playmarket.utilities.net.APIUtils;
 import com.blockchain.store.playmarket.crypto.CryptoUtils;
 import com.blockchain.store.playmarket.utilities.data.ImageUtils;
 import com.blockchain.store.playmarket.utilities.device.PermissionUtils;
+import com.blockchain.store.playmarket.utilities.net.InfuraAPIUtils;
 
 import org.ethereum.geth.Address;
 import org.ethereum.geth.BigInt;
@@ -113,6 +114,19 @@ public class AppDetailActivity extends AppCompatActivity {
         if (BuildUtils.shouldSetMarkdownBackground()) {
             markdownView.setBackgroundColor(getColor(R.color.markdownViewBackground));
         }
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                } catch (Exception e) {
+
+                }
+            }
+        });
+
+        thread.start();
     }
 
     protected void setupKeyManager() {
@@ -176,7 +190,56 @@ public class AppDetailActivity extends AppCompatActivity {
         TextView addFundsBtn = (TextView) d.findViewById(R.id.continueButton);
         addFundsBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                purchase(passwordText.getText().toString());
+                purchase(passwordText.getText().toString(), false, null);
+                d.dismiss();
+            }
+        });
+
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+    }
+
+    public void promptForAmountToInvest() {
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.invest_amount_dialog);
+
+        final EditText investmentAmountText = (EditText) d.findViewById(R.id.investmentAmountText);
+
+        d.show();
+
+        TextView addFundsBtn = (TextView) d.findViewById(R.id.continueButton);
+        addFundsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                promptForPasswordInvest(investmentAmountText.getText().toString());
+                d.dismiss();
+            }
+        });
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+    }
+
+    public void promptForPasswordInvest(final String amountToInvest) {
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.password_prompt_dialog);
+
+        final EditText passwordText = (EditText) d.findViewById(R.id.passwordText);
+
+        d.show();
+
+        TextView addFundsBtn = (TextView) d.findViewById(R.id.continueButton);
+        addFundsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                purchase(passwordText.getText().toString(), true, amountToInvest);
                 d.dismiss();
             }
         });
@@ -229,40 +292,60 @@ public class AppDetailActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-    public void purchase(final String password) {
+    public void purchase(final String password, final boolean invest, final String amountToInvest) {
         displayProccessingAlert();
 
-        Thread thread = new Thread(new Runnable(){
+        final Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
                 try {
-                        String gasPrice = APIUtils.api.getGasPrice();
-                        int nonce = APIUtils.api.getNonce(keyManager.getAccounts().get(0).getAddress().getHex());
+                    String gasPrice = APIUtils.api.getGasPrice();
+                    int nonce = APIUtils.api.getNonce(keyManager.getAccounts().get(0).getAddress().getHex());
 
-                        BigInt value = new BigInt(0);
+                    BigInt value = new BigInt(0);
+
+                    if (invest && amountToInvest != null) {
+                        value.setInt64((long) (new EthereumPrice("1000000000000000000").inWei().doubleValue() * Double.parseDouble(amountToInvest)));
+                    } else {
                         value.setInt64(price.inWei().longValue());
+                    }
 
-                        Transaction tx = new Transaction(
+                    Transaction tx;
+                    if (invest) {
+                        tx = new Transaction(
+                                nonce, new Address(CryptoUtils.ICO_CONTRACT_ADDRESS),
+                                value, new BigInt(300000), new BigInt(Long.valueOf(gasPrice)), null);
+                    } else {
+                        tx = new Transaction(
                                 nonce, new Address(CryptoUtils.CONTRACT_ADDRESS),
                                 value, new BigInt(200000), new BigInt(Long.valueOf(gasPrice)), CryptoUtils.getDataForBuyApp(idApp2, String.valueOf(idCat)));
+                    }
 
-                        try {
-                            Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), password, tx, new BigInt(3));
+                    try {
+                        Transaction transaction = keyManager.getKeystore().signTxPassphrase(keyManager.getAccounts().get(0), password, tx, new BigInt(3));
 
-                            Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
-
+                        if (invest) {
+                            APIUtils.api.sendTX(CryptoUtils.getRawTransaction(transaction));
+                        } else {
                             installApk(CryptoUtils.getRawTransaction(transaction));
-
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                    displayDownloadingAlert();
-                                 }
-                            });
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
+
+                        Log.d("Ether", CryptoUtils.getRawTransaction(transaction));
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                             @Override
+                             public void run() {
+                                 if (invest) {
+                                     displayInvestmentCompletedAlert();
+                                 } else {
+                                     displayDownloadingAlert();
+                                 }
+                             }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -318,6 +401,46 @@ public class AppDetailActivity extends AppCompatActivity {
     }
 
     public void investApp(View view) {
+
+        if (APIUtils.api.balance.isZero()) {
+            displayNotEnoughMoneyAlert();
+            showAddFundsDialog();
+            return;
+        }
+
+        final Dialog d = new Dialog(this);
+        d.setContentView(R.layout.purchase_confirm_dialog);
+
+        TextView priceText = (TextView) d.findViewById(R.id.priceText);
+        priceText.setText("");
+
+        TextView appTitleText = (TextView) d.findViewById(R.id.appTitleText);
+        appTitleText.setText(appTitleHeader.getText());
+
+        TextView balanceText = (TextView) d.findViewById(R.id.balanceText);
+        balanceText.setText(APIUtils.api.balance.getDisplayPrice(true));
+
+        ImageView appIconView = (ImageView) d.findViewById(R.id.appIcon);
+        appIconView.setImageDrawable(iconView.getDrawable());
+
+        d.show();
+
+        TextView addFundsBtn = (TextView) d.findViewById(R.id.addMoneyButton);
+        addFundsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showAddFundsDialog();
+            }
+        });
+
+
+        Button close_btn = (Button) d.findViewById(R.id.close_button);
+        close_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                promptForAmountToInvest();
+                d.dismiss();
+            }
+        });
+
     }
 
     public void goBackToList(View view) {

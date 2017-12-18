@@ -133,7 +133,7 @@ public class AccountManagementActivity extends AppCompatActivity {
     }
 
     private void showBackupAlert() {
-        Toast.makeText(getApplicationContext(), "Wallet Backup Copied!",
+        Toast.makeText(getApplicationContext(), "Wallet Backup Copied to Clipboard!",
                 Toast.LENGTH_LONG).show();
     }
 

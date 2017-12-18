@@ -17,6 +17,7 @@ import com.blockchain.store.playmarket.R;
 import com.blockchain.store.playmarket.utilities.net.APIUtils;
 import com.blockchain.store.playmarket.utilities.device.BuildUtils;
 import com.blockchain.store.playmarket.crypto.CryptoUtils;
+import com.blockchain.store.playmarket.utilities.net.InfuraAPIUtils;
 import com.blockchain.store.playmarket.utilities.net.NodeUtils;
 
 import java.io.IOException;
@@ -120,6 +121,14 @@ public class IntroLogoActivity extends AppCompatActivity {
                     setContractAddress();
                 } catch (IOException e) {
                     e.printStackTrace();
+
+                    initApiUtils("000001");
+                    try {
+                        setContractAddress();
+                    } catch (IOException ee) {
+                        ee.printStackTrace();
+                    };
+
                 }
             }
         });
